@@ -40,10 +40,10 @@ describe("GET /api/users", () => {
   });
 });
 
-describe("GET /api/users/:email", () => {
+describe("GET /api/users/user_id", () => {
   it("returns a single user object based on their email", () => {
     return request(app)
-      .get("/api/users/abdiaziz@northcoders.co.uk")
+      .get("/api/users/1")
       .expect(200)
       .then(({ body }) => {
         const { user } = body;
@@ -55,12 +55,12 @@ describe("GET /api/users/:email", () => {
         );
       });
   });
-  it("returns an appropriate error status and message when provided an invalid email", () => {
+  it("returns an appropriate error status and message when provided an invalid user_id", () => {
     return request(app)
-      .get("/api/users/personnotatnorthcoders@northcoders.co.uk")
+      .get("/api/users/999999")
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("user not found");
+        expect(body.msg).toBe("404: User Not Found");
       });
   });
 });

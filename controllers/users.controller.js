@@ -9,8 +9,8 @@ exports.getAllUsers = (request, response, next) => {
 };
 
 exports.getUser = (request, response, next) => {
-  const { email } = request.params;
-  fetchUser(email)
+  const { user_id } = request.params;
+  fetchUser(user_id)
     .then((user) => {
       response.status(200).send({ user });
     })
