@@ -64,3 +64,37 @@ describe("GET /api/users/:email", () => {
       });
   });
 });
+
+describe("GET /api/trips",()=>{
+  it("return an array of trips object",()=>{
+    return request (app)
+    .get("/api/trips")
+    .expect(200)
+    .then(({body})=>{
+      expect(Array.isArray(body)).toBe(true)
+       body.forEach((trip) => {
+          expect(trip).toHaveProperty("trip_name", expect.any(String));
+          expect(trip).toHaveProperty("location", expect.any(String));
+          expect(trip).toHaveProperty("description", expect.any(String));
+          expect(trip).toHaveProperty("start_date", expect.any(String));
+        });
+    })
+  })
+})
+
+describe("GET /api/trips/trip_id",()=>{
+  it("returns a single user object based a trip id",()=>{
+    return request (app)
+    .get("/api/trips/1")
+    .expect(200)
+    .then(({body})=>{
+       const { trip } = body;
+        expect(trip).toBeInstanceOf(Object);
+        expect(trip.trip_name).toBe("Barbados 2024");
+        expect(trip.location).toBe("Barbados");
+        expect(trip.description).toBe("Silent Assassin");
+        expect(trip.start_date).toBe("2022-02-02T00:00:00.000Z");
+        expect(trip.trip_img_url).toBe(null);
+    })
+  })
+})
