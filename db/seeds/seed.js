@@ -9,7 +9,7 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData }) => {
     .then(() => db.query(`DROP TABLE IF EXISTS trips;`))
     .then(() => db.query(`DROP TABLE IF EXISTS users;`))
     .then(() => {
-      const usersTablePromise = db.query(`
+      return db.query(`
         CREATE TABLE users (
           user_id SERIAL PRIMARY KEY,
           name VARCHAR NOT NULL,
@@ -17,21 +17,20 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData }) => {
           email VARCHAR(100),
           created_at TIMESTAMP DEFAULT NOW()
         );`);
-
-      const tripsTablePromise = db.query(`
-        CREATE TABLE trips (
-          trip_id SERIAL PRIMARY KEY,
-          trip_name VARCHAR(100) NOT NULL,
-          location VARCHAR(100) NOT NULL,
-          description TEXT,
-          start_date DATE NOT NULL,
-          end_date DATE,
-          created_by INT REFERENCES users(user_id),
-          created_at TIMESTAMP DEFAULT NOW(),
-          trip_img_url VARCHAR(100)
-        );`);
-
-      return Promise.all([usersTablePromise, tripsTablePromise]);
+    })
+    .then(() => {
+      return db.query(`
+          CREATE TABLE trips (
+            trip_id SERIAL PRIMARY KEY,
+            trip_name VARCHAR(100) NOT NULL,
+            location VARCHAR(100) NOT NULL,
+            description TEXT,
+            start_date DATE NOT NULL,
+            end_date DATE,
+            created_by INT REFERENCES users(user_id),
+            created_at TIMESTAMP DEFAULT NOW(),
+            trip_img_url VARCHAR(100)
+          );`);
     })
     .then(() => {
       return db.query(`
@@ -57,15 +56,25 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData }) => {
         );`);
     })
     .then(() => {
-      const insertUsersQueryStr = format(
+      const insertUserQueryStr = format(
         "INSERT INTO users (name, avatar_url, email) VALUES %L;",
         userData.map(({ name, avatar_url, email }) => [name, avatar_url, email])
       );
 
-      const insertTripsQueryStr = format(
+      return db.query(insertUserQueryStr);
+    })
+    .then(() => {
+      const insertTripQueryStr = format(
         "INSERT INTO trips (trip_name, location, description, start_date, end_date, created_by) VALUES %L;",
         tripsData.map(
-          ({ trip_name, location, description, start_date, end_date, created_by }) => [
+          ({
+            trip_name,
+            location,
+            description,
+            start_date,
+            end_date,
+            created_by,
+          }) => [
             trip_name,
             location,
             description,
@@ -76,14 +85,22 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData }) => {
         )
       );
 
-      return Promise.all([db.query(insertUsersQueryStr), db.query(insertTripsQueryStr)]);
+      return db.query(insertTripQueryStr);
     })
     .then(() => {
       const formattedActivityData = activitiesData.map(convertTimestampToDate);
       const insertActivitiesQueryStr = format(
         "INSERT INTO activities (trip_id, in_itinerary, date, time, description, votes, activity_img_url) VALUES %L;",
         formattedActivityData.map(
-          ({ trip_id, in_itinerary, date, time, description, votes, activity_img_url }) => [
+          ({
+            trip_id,
+            in_itinerary,
+            date,
+            time,
+            description,
+            votes,
+            activity_img_url,
+          }) => [
             trip_id,
             in_itinerary,
             date,
@@ -99,7 +116,11 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData }) => {
     .then(() => {
       const insertTripMembersQueryStr = format(
         "INSERT INTO trip_members (trip_id, user_id, is_admin) VALUES %L;",
-        tripMembersData.map(({ trip_id, user_id, is_admin }) => [trip_id, user_id, is_admin])
+        tripMembersData.map(({ trip_id, user_id, is_admin }) => [
+          trip_id,
+          user_id,
+          is_admin,
+        ])
       );
       return db.query(insertTripMembersQueryStr);
     });
