@@ -15,13 +15,12 @@ app.all("*", (request, response) => {
 });
 
 app.use((error, request, response, next) => {
-  console.log(error);
   if (error.status) {
     response.status(error.status).send({ msg: error.msg });
   } else if (error.code === "22P02" || error.code === "23502") {
     response.status(400).send({ msg: "400: Bad Request" });
   } else if (error.code === "23503") {
-    response.status(404).send({ msg: "404: Article or User Not Found" });
+    response.status(404).send({ msg: "404: Trip or User Not Found" });
   } else {
     response.status(500).send({ msg: "Internal Server Error" });
   }
