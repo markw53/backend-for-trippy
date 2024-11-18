@@ -1,0 +1,5 @@
+DROP DATABASE IF EXISTS trippy_test;
+DROP DATABASE IF EXISTS trippy;
+
+CREATE DATABASE trippy_test;
+CREATE DATABASE trippy;

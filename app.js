@@ -1,13 +1,14 @@
 const cors = require("cors");
 const express = require("express");
 const app = express();
-
+const usersRouter = require("./routes/users.router");
 const { getEndPoints } = require("./controllers/endPoints.controller");
 
 app.use(cors());
 app.use(express.json());
 
 app.get("/api", getEndPoints)
+app.get("/api/users", usersRouter)
 
 app.all("*", (request, response) => {
   response.status(404).send({ msg: "404: Not Found" });
