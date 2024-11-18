@@ -1,8 +1,9 @@
 const cors = require("cors");
 const express = require("express");
 const app = express();
-const usersRouter = require("./routes/users.router");
 const { getEndPoints } = require("./controllers/endPoints.controller");
+
+const usersRouter = require("./routes/users.router");
 const tripsRouter = require("./routes/trips.router");
 
 app.use(cors());

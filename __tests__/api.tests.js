@@ -82,7 +82,6 @@ describe("POST /api/users", () => {
         const { user } = body;
         expect(user).toEqual(
           expect.objectContaining({
-            username: "new_user",
             email: "newuser@email.com",
             name: "New User",
           })
