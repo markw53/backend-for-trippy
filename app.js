@@ -3,12 +3,17 @@ const express = require("express");
 const app = express();
 const usersRouter = require("./routes/users.router");
 const { getEndPoints } = require("./controllers/endPoints.controller");
+const tripsRouter = require("./routes/trips.router");
 
 app.use(cors());
 app.use(express.json());
 
 app.get("/api", getEndPoints);
 app.use("/api/users", usersRouter);
+app.use("/api/trips", tripsRouter);
+
+
+
 
 app.all("*", (request, response) => {
   response.status(404).send({ msg: "404: Not Found" });
