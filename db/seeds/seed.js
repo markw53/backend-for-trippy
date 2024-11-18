@@ -27,7 +27,7 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData }) => {
             description TEXT,
             start_date DATE NOT NULL,
             end_date DATE,
-            created_by INT REFERENCES users(user_id),
+            created_by INT REFERENCES users(user_id) ON DELETE CASCADE,
             created_at TIMESTAMP DEFAULT NOW(),
             trip_img_url VARCHAR(100)
           );`);
@@ -36,7 +36,7 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData }) => {
       return db.query(`
         CREATE TABLE activities (
           activity_id SERIAL PRIMARY KEY,
-          trip_id INT REFERENCES trips(trip_id),
+          trip_id INT REFERENCES trips(trip_id) ON DELETE CASCADE,
           in_itinerary BOOLEAN DEFAULT FALSE,
           created_at TIMESTAMP DEFAULT NOW(),
           date DATE NOT NULL,
@@ -50,8 +50,8 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData }) => {
       return db.query(`
         CREATE TABLE trip_members (
           trip_member_id SERIAL PRIMARY KEY,
-          trip_id INT REFERENCES trips(trip_id),
-          user_id INT REFERENCES users(user_id),
+          trip_id INT REFERENCES trips(trip_id) ON DELETE CASCADE,
+          user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
           is_admin BOOLEAN DEFAULT FALSE
         );`);
     })
