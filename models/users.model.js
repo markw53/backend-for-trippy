@@ -22,3 +22,13 @@ exports.fetchUser = (user_id) => {
       return result.rows[0];
     });
 };
+
+exports.insertUser = (email, name) => {
+  return db
+    .query(
+      `INSERT INTO users (email, name)
+       VALUES ($1, $2) RETURNING *`,
+      [email, name]
+    )
+    .then((result) => result.rows[0]);
+};
