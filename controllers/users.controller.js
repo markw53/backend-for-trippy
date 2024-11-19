@@ -1,4 +1,9 @@
-const { fetchAllUsers, fetchUser, insertUser } = require("../models/users.model");
+const {
+  fetchAllUsers,
+  fetchUser,
+  insertUser,
+  changeUserById,
+} = require("../models/users.model");
 
 exports.getAllUsers = (request, response, next) => {
   fetchAllUsers()
@@ -22,6 +27,15 @@ exports.createUser = (request, response, next) => {
   insertUser(email, name)
     .then((user) => {
       response.status(201).send({ user });
+    })
+    .catch(next);
+};
+
+exports.updateUser = (request, response, next) => {
+  const { user_id } = request.params;
+  changeUserById(user_id, request.body)
+    .then((user) => {
+      response.status(200).send({ user });
     })
     .catch(next);
 };

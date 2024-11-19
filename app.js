@@ -13,9 +13,6 @@ app.get("/api", getEndPoints);
 app.use("/api/users", usersRouter);
 app.use("/api/trips", tripsRouter);
 
-
-
-
 app.all("*", (request, response) => {
   response.status(404).send({ msg: "404: Not Found" });
 });
