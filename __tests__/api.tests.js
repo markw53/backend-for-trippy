@@ -180,30 +180,27 @@ describe("PATCH /api/users/:user_id", () => {
   });
 });
 
-describe("DELETE /api/users/:user_id",()=>{
-  it("204: Response with no content",()=>{
+describe("DELETE /api/users/:user_id", () => {
+  it("204: Response with no content", () => {
+    return request(app).delete("/api/users/1").expect(204);
+  });
+  it("400: responds with an appropriate status and error message when provided an invalid user id", () => {
     return request(app)
-    .delete("/api/users/1")
-    .expect(204)
-  })
-  it("400: responds with an appropriate status and error message when provided an invalid user id",()=>{
+      .delete("/api/users/notAnId")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("400: Bad Request");
+      });
+  });
+  it("404: responds with an appropriate status and error message when provided a valid user id that does not exist", () => {
     return request(app)
-    .delete("/api/users/notAnId")
-    .expect(400)
-    .then(({body})=>{
-      expect(body.msg).toBe("400: Bad Request")
-    })
-  })
-  it("404: responds with an appropriate status and error message when provided a valid user id that does not exist",()=>{
-    return request(app)
-    .delete("/api/users/9999")
-    .expect(404)
-    .then(({body})=>{
-      expect(body.msg).toBe("404: Not Found")
-    })
-  })
-})
-
+      .delete("/api/users/9999")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("404: Not Found");
+      });
+  });
+});
 
 // TRIPS
 describe("GET /api/trips", () => {
@@ -240,4 +237,95 @@ describe("GET /api/trips/trip_id", () => {
   });
 });
 
+describe("GET /api/trips/:trip_id/members", () => {
+  it("200: returns an array of members for a valid trip ID", () => {
+    return request(app)
+      .get("/api/trips/1/members")
+      .expect(200)
+      .then(({ body }) => {
+        const { members } = body;
+        expect(Array.isArray(members)).toBe(true);
+        members.forEach((member) => {
+          expect(member).toHaveProperty("trip_member_id", expect.any(Number));
+          expect(member).toHaveProperty("user_id", expect.any(Number));
+          expect(member).toHaveProperty("is_admin", expect.any(Boolean));
+          expect(member).toHaveProperty("name", expect.any(String));
+          expect(member).toHaveProperty("avatar_url", expect.any(String));
+        });
+      });
+  });
 
+  it("404: responds with an error when trip ID does not exist", () => {
+    return request(app)
+      .get("/api/trips/999/members")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Trip not found");
+      });
+  });
+});
+
+describe("POST /api/trips/:trip_id/members", () => {
+  it("201: adds a user to the trip and returns the new member", () => {
+    const newMember = { user_id: 3 };
+
+    return request(app)
+      .post("/api/trips/1/members")
+      .send(newMember)
+      .expect(201)
+      .then(({ body }) => {
+        const { member } = body;
+        expect(member).toEqual(
+          expect.objectContaining({
+            trip_member_id: expect.any(Number),
+            trip_id: 1,
+            user_id: 3,
+            is_admin: false,
+          })
+        );
+      });
+  });
+
+  it("400: responds with an error when user_id is missing", () => {
+    return request(app)
+      .post("/api/trips/1/members")
+      .send({})
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("400: Bad Request - Missing required field: user_id");
+      });
+  });
+
+  it("404: responds with an error when trip ID does not exist", () => {
+    const newMember = { user_id: 3 };
+
+    return request(app)
+      .post("/api/trips/999/members")
+      .send(newMember)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("404: Trip or User Not Found");
+      });
+  });
+});
+
+describe("DELETE /api/trips/:trip_id/members with a body of user_id", () => {
+  it("200: removes a user from the trip and responds with a success message", () => {
+    return request(app)
+      .delete("/api/trips/1/members")
+      .send({user_id: 2})
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.msg).toBe("User Was Removed From The Trip");
+      });
+  });
+
+  it("404: responds with an error when trip ID or user ID does not exist", () => {
+    return request(app)
+      .delete("/api/trips/999/members")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Missing required fields: trip_id and user_id are mandatory");
+      });
+  });
+});
