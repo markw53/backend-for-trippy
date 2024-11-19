@@ -29,5 +29,130 @@
       "avatar_url": "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
       "email": "abdiaziz@northcoders.co.uk"
     }
+  },
+  "POST /api/users": {
+      "description": "serves a new user object",
+      "queries": [],
+      "exampleResponse": {
+        "user": {
+          "user_id": 5,
+          "email": "newuser@email.com",
+          "name": "New User",
+          "avatar_url": "https://images.pexels.com/photos/457882/pexels-photo-457882.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+          "created_at": "2024-01-05T12:00:00.000Z"
+          }
+      },
+      "exampleRequest": {
+        "username": "new_user",
+        "email": "newuser@email.com",
+        "name": "New User"
+      }
+    },
+    "PATCH /api/users/:id": {
+      "description": "serves an updated user object based on its id",
+      "queries": [],
+      "exampleResponse": {
+        "user": {
+          "name": "New Name",
+          "email": "newuser@email.com",
+          "avatar_url": "New_Avatar_Url.jpeg"
+        }
+    },
+    "exampleRequest": {
+       "name": "New Name",
+       "avatar_url": "New_Avatar_Url.jpeg"
+    }
+   },
+   "DELETE /api/users/:id": {
+    "description": "serves no content but deletes a user from users",
+    "queries": [],
+    "exampleResponse": {}
+  },
+  "GET /api/trips": {
+    "description": "Retrieve all trips.",
+    "exampleResponse": [
+      {
+        "trip_name": "Barbados 2024",
+        "location": "Barbados",
+        "description": "Silent Assassin",
+        "start_date": "2022-02-02",
+        "trip_img_url":
+          "https://static.wikia.nocookie.net/versus-compendium/images/1/13/Ac_2_ezio.png/revision/latest/scale-to-width-down/1000?cb=20200113175628"
+      },
+      {
+        "trip_name": "Rome Adventure",
+        "location": "Rome, Italy",
+        "description": "Explore the ancient ruins and vibrant culture.",
+        "start_date": "2023-05-10",
+        "trip_img_url":
+          "https://images.pexels.com/photos/533848/pexels-photo-533848.jpeg?w=700&h=700"
+      }
+    ]
+  },
+  "GET /api/trips/:id": {
+    "description": "Retrieve trip details by ID.",
+    "exampleResponse": {
+      "trip_name": "Rome Adventure",
+      "location": "Rome, Italy",
+      "description": "Explore the ancient ruins and vibrant culture.",
+      "start_date": "2023-05-10",
+      "trip_img_url":
+        "https://images.pexels.com/photos/533848/pexels-photo-533848.jpeg?w=700&h=700"
+    }
+  },
+  "POST /api/trips": {
+      "description": "serves a new trip object",
+      "queries": [],
+      "exampleResponse": {
+        "trip": {
+          "trip_id": 5,
+          "trip_name": "Name of travel group",
+          "location": "Destination",
+          "description": "A description of what the trip is about",
+          "start_date": "2024-01-15",
+          "end_date": "2024-02-01",
+          "created_by": "New User",
+          "trip_img_url": "https://images.pexels.com/photos/533848/pexels-photo-533848.jpeg?w=700&h=700"
+          }
+      },
+      "exampleRequest": {
+        "trip_name": "Name of travel group",
+        "location": "Destination",
+        "description": "A description of what the trip is about",
+        "start_date": "2024-01-15",
+        "end_date": "2024-02-01",
+        "created_by": "New User",
+        "trip_img_url": "https://images.pexels.com/photos/533848/pexels-photo-533848.jpeg?w=700&h=700"
+      }
+    },
+    "PATCH /api/trips/:id": {
+      "description": "serves an updated trip object based on its id",
+      "queries": [],
+      "exampleResponse": {
+        "trip": {
+          "trip_id": 1,
+          "trip_name": "Name of travel group",
+          "location": "Destination",
+          "description": "A new trip description",
+          "start_date": "2022-04-20",
+          "end_date": "2022-04-27",
+          "created_by": "New Creator",
+          "trip_img_url": "New_Trip_Image.png"
+        }
+    },
+    "exampleRequest": {
+      "trip_name": "New travel group name",
+      "location": "New destination",
+      "description": "A description of what the trip is about",
+      "start_date": "2022-04-20",
+      "end_date": "2022-04-27",
+      "created_by": "New Creator",
+      "trip_img_url": "New_Trip_Image.png"
+    }
+   },
+   "DELETE /api/trips/:id": {
+    "description": "serves no content but deletes a trip from trips",
+    "queries": [],
+    "exampleResponse": {}
   }
 }
