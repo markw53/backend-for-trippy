@@ -52,7 +52,7 @@ describe("GET /api/users/user_id", () => {
         expect(user.user_id).toBe(1);
         expect(user.name).toBe("Abdiaziz");
         expect(user.avatar_url).toBe(
-          "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700"
+          "https://images.pexels.com/photos/457882/pexels-photo-457882.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
         );
       });
   });
