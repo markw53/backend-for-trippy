@@ -41,11 +41,11 @@ exports.updateUser = (request, response, next) => {
     .catch(next);
 };
 
-exports.deleteUser = ((request, response, next)=>{
+exports.deleteUser = (request, response, next)=>{
   const {user_id } = request.params;
   removeUser(user_id)
   .then((user)=>{
     response.status(204).send({user});
   })
   .catch(next);
-})
+}
