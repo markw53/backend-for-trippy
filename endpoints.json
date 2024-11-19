@@ -31,39 +31,39 @@
     }
   },
   "POST /api/users": {
-      "description": "serves a new user object",
-      "queries": [],
-      "exampleResponse": {
-        "user": {
-          "user_id": 5,
-          "email": "newuser@email.com",
-          "name": "New User",
-          "avatar_url": "https://images.pexels.com/photos/457882/pexels-photo-457882.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-          "created_at": "2024-01-05T12:00:00.000Z"
-          }
-      },
-      "exampleRequest": {
-        "username": "new_user",
+    "description": "serves a new user object",
+    "queries": [],
+    "exampleResponse": {
+      "user": {
+        "user_id": 5,
         "email": "newuser@email.com",
-        "name": "New User"
+        "name": "New User",
+        "avatar_url": "https://images.pexels.com/photos/457882/pexels-photo-457882.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+        "created_at": "2024-01-05T12:00:00.000Z"
       }
     },
-    "PATCH /api/users/:id": {
-      "description": "serves an updated user object based on its id",
-      "queries": [],
-      "exampleResponse": {
-        "user": {
-          "name": "New Name",
-          "email": "newuser@email.com",
-          "avatar_url": "New_Avatar_Url.jpeg"
-        }
+    "exampleRequest": {
+      "username": "new_user",
+      "email": "newuser@email.com",
+      "name": "New User"
+    }
+  },
+  "PATCH /api/users/:id": {
+    "description": "serves an updated user object based on its id",
+    "queries": [],
+    "exampleResponse": {
+      "user": {
+        "name": "New Name",
+        "email": "newuser@email.com",
+        "avatar_url": "New_Avatar_Url.jpeg"
+      }
     },
     "exampleRequest": {
-       "name": "New Name",
-       "avatar_url": "New_Avatar_Url.jpeg"
+      "name": "New Name",
+      "avatar_url": "New_Avatar_Url.jpeg"
     }
-   },
-   "DELETE /api/users/:id": {
+  },
+  "DELETE /api/users/:id": {
     "description": "serves no content but deletes a user from users",
     "queries": [],
     "exampleResponse": {}
@@ -76,16 +76,14 @@
         "location": "Barbados",
         "description": "Silent Assassin",
         "start_date": "2022-02-02",
-        "trip_img_url":
-          "https://static.wikia.nocookie.net/versus-compendium/images/1/13/Ac_2_ezio.png/revision/latest/scale-to-width-down/1000?cb=20200113175628"
+        "trip_img_url": "https://static.wikia.nocookie.net/versus-compendium/images/1/13/Ac_2_ezio.png/revision/latest/scale-to-width-down/1000?cb=20200113175628"
       },
       {
         "trip_name": "Rome Adventure",
         "location": "Rome, Italy",
         "description": "Explore the ancient ruins and vibrant culture.",
         "start_date": "2023-05-10",
-        "trip_img_url":
-          "https://images.pexels.com/photos/533848/pexels-photo-533848.jpeg?w=700&h=700"
+        "trip_img_url": "https://images.pexels.com/photos/533848/pexels-photo-533848.jpeg?w=700&h=700"
       }
     ]
   },
@@ -96,26 +94,15 @@
       "location": "Rome, Italy",
       "description": "Explore the ancient ruins and vibrant culture.",
       "start_date": "2023-05-10",
-      "trip_img_url":
-        "https://images.pexels.com/photos/533848/pexels-photo-533848.jpeg?w=700&h=700"
+      "trip_img_url": "https://images.pexels.com/photos/533848/pexels-photo-533848.jpeg?w=700&h=700"
     }
   },
   "POST /api/trips": {
-      "description": "serves a new trip object",
-      "queries": [],
-      "exampleResponse": {
-        "trip": {
-          "trip_id": 5,
-          "trip_name": "Name of travel group",
-          "location": "Destination",
-          "description": "A description of what the trip is about",
-          "start_date": "2024-01-15",
-          "end_date": "2024-02-01",
-          "created_by": "New User",
-          "trip_img_url": "https://images.pexels.com/photos/533848/pexels-photo-533848.jpeg?w=700&h=700"
-          }
-      },
-      "exampleRequest": {
+    "description": "serves a new trip object",
+    "queries": [],
+    "exampleResponse": {
+      "trip": {
+        "trip_id": 5,
         "trip_name": "Name of travel group",
         "location": "Destination",
         "description": "A description of what the trip is about",
@@ -125,20 +112,30 @@
         "trip_img_url": "https://images.pexels.com/photos/533848/pexels-photo-533848.jpeg?w=700&h=700"
       }
     },
-    "PATCH /api/trips/:id": {
-      "description": "serves an updated trip object based on its id",
-      "queries": [],
-      "exampleResponse": {
-        "trip": {
-          "trip_id": 1,
-          "trip_name": "Name of travel group",
-          "location": "Destination",
-          "description": "A new trip description",
-          "start_date": "2022-04-20",
-          "end_date": "2022-04-27",
-          "created_by": "New Creator",
-          "trip_img_url": "New_Trip_Image.png"
-        }
+    "exampleRequest": {
+      "trip_name": "Name of travel group",
+      "location": "Destination",
+      "description": "A description of what the trip is about",
+      "start_date": "2024-01-15",
+      "end_date": "2024-02-01",
+      "created_by": "New User",
+      "trip_img_url": "https://images.pexels.com/photos/533848/pexels-photo-533848.jpeg?w=700&h=700"
+    }
+  },
+  "PATCH /api/trips/:id": {
+    "description": "serves an updated trip object based on its id",
+    "queries": [],
+    "exampleResponse": {
+      "trip": {
+        "trip_id": 1,
+        "trip_name": "Name of travel group",
+        "location": "Destination",
+        "description": "A new trip description",
+        "start_date": "2022-04-20",
+        "end_date": "2022-04-27",
+        "created_by": "New Creator",
+        "trip_img_url": "New_Trip_Image.png"
+      }
     },
     "exampleRequest": {
       "trip_name": "New travel group name",
@@ -149,10 +146,52 @@
       "created_by": "New Creator",
       "trip_img_url": "New_Trip_Image.png"
     }
-   },
-   "DELETE /api/trips/:id": {
+  },
+  "DELETE /api/trips/:id": {
     "description": "serves no content but deletes a trip from trips",
     "queries": [],
     "exampleResponse": {}
+  },
+
+  "GET /api/trips/:trip_id/members": {
+    "description": "Retrieve all members of a trip, including their admin status and profile information.",
+    "exampleResponse": {
+      "members": [
+        {
+          "trip_member_id": 1,
+          "user_id": 2,
+          "is_admin": true,
+          "name": "Alice",
+          "avatar_url": "https://example.com/avatar/alice.png"
+        },
+        {
+          "trip_member_id": 2,
+          "user_id": 3,
+          "is_admin": false,
+          "name": "Bob",
+          "avatar_url": "https://example.com/avatar/bob.png"
+        }
+      ]
+    }
+  },
+  "POST /api/trips/:trip_id/members": {
+    "description": "Invite a user to a trip by adding them to the trip members table.",
+    "exampleRequest": {
+      "user_id": 5
+    },
+    "exampleResponse": {
+      "member": {
+        "trip_member_id": 3,
+        "trip_id": 1,
+        "user_id": 5,
+        "is_admin": false
+      }
+    }
+  },
+  "DELETE /api/trips/:trip_id/members/:user_id": {
+    "description": "Remove a user from a trip's members.",
+    "exampleResponse": {
+      "msg": "User was removed from the trip"
+    }
   }
 }
