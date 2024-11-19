@@ -180,6 +180,31 @@ describe("PATCH /api/users/:user_id", () => {
   });
 });
 
+describe("DELETE /api/users/:user_id",()=>{
+  it("204: Response with no content",()=>{
+    return request(app)
+    .delete("/api/users/1")
+    .expect(204)
+  })
+  it("400: responds with an appropriate status and error message when provided an invalid user id",()=>{
+    return request(app)
+    .delete("/api/users/notAnId")
+    .expect(400)
+    .then(({body})=>{
+      expect(body.msg).toBe("400: Bad Request")
+    })
+  })
+  it("404: responds with an appropriate status and error message when provided a valid user id that does not exist",()=>{
+    return request(app)
+    .delete("/api/users/9999")
+    .expect(404)
+    .then(({body})=>{
+      expect(body.msg).toBe("404: Not Found")
+    })
+  })
+})
+
+
 // TRIPS
 describe("GET /api/trips", () => {
   it("return an array of trips object", () => {
@@ -214,3 +239,5 @@ describe("GET /api/trips/trip_id", () => {
       });
   });
 });
+
+
