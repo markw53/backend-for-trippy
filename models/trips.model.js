@@ -7,15 +7,15 @@ exports.fetchAllTrips = () => {
         SELECT * FROM trips
         `
     )
-    .then((result) => {
+    .then(result => {
       return result.rows;
     });
 };
 
-exports.fetchTrip = (trip_id) => {
+exports.fetchTrip = trip_id => {
   return db
     .query(`SELECT * FROM trips WHERE trip_id = $1`, [trip_id])
-    .then((result) => {
+    .then(result => {
       if (result.rows.length === 0) {
         return Promise.reject({ status: 404, msg: "Trip not found" });
       }
@@ -23,19 +23,46 @@ exports.fetchTrip = (trip_id) => {
     });
 };
 
-exports.insertTrip = (trip_name, location, description, start_date, end_date, created_by, trip_img_url) => {
-  return db.query(
-    `
+exports.insertTrip = (
+  trip_name,
+  location,
+  description,
+  start_date,
+  end_date,
+  created_by,
+  trip_img_url
+) => {
+  return db
+    .query(
+      `
     INSERT INTO trips (trip_name, location, description, start_date, end_date, created_by, trip_img_url)
     VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *
-    `, [trip_name, location, description, start_date, end_date, created_by, trip_img_url]
-  )
-  .then((result) => result.rows[0])
-}
+    `,
+      [
+        trip_name,
+        location,
+        description,
+        start_date,
+        end_date,
+        created_by,
+        trip_img_url
+      ]
+    )
+    .then(result => result.rows[0]);
+};
 
-exports.updateTrip = (trip_id, trip_name, location, description, start_date, end_date, trip_img_url) => {
-  return db.query(
-    `
+exports.updateTrip = (
+  trip_id,
+  trip_name,
+  location,
+  description,
+  start_date,
+  end_date,
+  trip_img_url
+) => {
+  return db
+    .query(
+      `
     UPDATE trips
     SET trip_name = $2,
       location = $3,
@@ -45,7 +72,41 @@ exports.updateTrip = (trip_id, trip_name, location, description, start_date, end
       trip_img_url = $7
     WHERE trip_id = $1
     RETURNING *
-    `, [trip_id, trip_name, location, description, start_date, end_date, trip_img_url]
-  )
-  .then((result) => result.rows[0])
-}
+    `,
+      [
+        trip_id,
+        trip_name,
+        location,
+        description,
+        start_date,
+        end_date,
+        trip_img_url
+      ]
+    )
+    .then(result => result.rows[0]);
+};
+
+exports.removeTripById = (trip_id) => {
+  const queryStr = `
+    DELETE FROM trips
+    WHERE trip_id = $1
+    RETURNING *;
+  `;
+
+  return db.query(queryStr, [trip_id]).then(({ rows }) => {
+    return rows[0];
+  });
+};
+
+exports.checkIfAdmin = (trip_id, user_id) => {
+  return db.query(`
+    SELECT is_admin
+    FROM trip_members
+    WHERE trip_id = $1
+    AND user_id = $2
+    ` [trip_id, user_id]
+  ).then ((result) => {
+    return result.rows[0].is_admin
+  });
+};
+
