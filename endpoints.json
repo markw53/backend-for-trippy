@@ -188,7 +188,7 @@
       }
     }
   },
-  "DELETE /api/trips/:trip_id/members/:user_id": {
+  "DELETE /api/trips/:trip_id/members": {
     "description": "Remove a user from a trip's members.",
     "exampleResponse": {
       "msg": "User was removed from the trip"
