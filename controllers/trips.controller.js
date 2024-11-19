@@ -1,5 +1,5 @@
 const { response } = require("../app");
-const { fetchAllTrips, fetchTrip, insertTrip } = require("../models/trips.model");
+const { fetchAllTrips, fetchTrip, insertTrip, updateTrip } = require("../models/trips.model");
 
 exports.getAllTrips = (request, response, next) => {
   fetchAllTrips()
@@ -23,6 +23,17 @@ exports.createTrip = (request, response, next) => {
   insertTrip(trip_name, location, description, start_date, end_date, created_by, trip_img_url)
   .then((trip) => {
     response.status(201).send({ trip })
+  })
+  .catch(next)
+}
+
+exports.patchTrip = (request, response, next) => {
+  const { trip_id } = request.params
+  const { trip_name, location, description, start_date, end_date, created_by, trip_img_url } = request.body
+  
+  updateTrip(trip_id, trip_name, location, description, start_date, end_date, created_by, trip_img_url)
+  .then((updatedTrip) => {
+    response.status(200).send({ trip: updatedTrip })
   })
   .catch(next)
 }
