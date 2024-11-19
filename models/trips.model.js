@@ -32,6 +32,12 @@ exports.insertTrip = (
   created_by,
   trip_img_url
 ) => {
+  if (!trip_name || !location || !start_date || !end_date || !created_by) {
+    return Promise.reject({
+      status: 400,
+      msg: "Missing required fields: trip_name, location, start_date, end_date, created_by are mandatory",
+    });
+  }
   return db
     .query(
       `
@@ -48,8 +54,22 @@ exports.insertTrip = (
         trip_img_url
       ]
     )
-    .then(result => result.rows[0]);
-};
+    .then((result) => {
+      const { trip_id } = result.rows[0]
+  
+      return db.query(
+        `
+        INSERT INTO trip_members (trip_id, user_id, admin)
+        VALUES ($1, $2, $3)
+        RETURNING *;
+        `,
+        [trip_id, created_by, true]
+      );
+    })
+    .then((result) => result.rows[0]);
+  
+    }
+
 
 exports.updateTrip = (
   trip_id,
