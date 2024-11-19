@@ -7,15 +7,15 @@ exports.fetchAllTrips = () => {
         SELECT * FROM trips
         `
     )
-    .then(result => {
+    .then((result) => {
       return result.rows;
     });
 };
 
-exports.fetchTrip = trip_id => {
+exports.fetchTrip = (trip_id) => {
   return db
     .query(`SELECT * FROM trips WHERE trip_id = $1`, [trip_id])
-    .then(result => {
+    .then((result) => {
       if (result.rows.length === 0) {
         return Promise.reject({ status: 404, msg: "Trip not found" });
       }
@@ -45,10 +45,10 @@ exports.insertTrip = (
         start_date,
         end_date,
         created_by,
-        trip_img_url
+        trip_img_url,
       ]
     )
-    .then(result => result.rows[0]);
+    .then((result) => result.rows[0]);
 };
 
 exports.updateTrip = (
@@ -80,10 +80,10 @@ exports.updateTrip = (
         description,
         start_date,
         end_date,
-        trip_img_url
+        trip_img_url,
       ]
     )
-    .then(result => result.rows[0]);
+    .then((result) => result.rows[0]);
 };
 
 exports.removeTripById = (trip_id) => {
@@ -98,15 +98,42 @@ exports.removeTripById = (trip_id) => {
   });
 };
 
-exports.checkIfAdmin = (trip_id, user_id) => {
-  return db.query(`
-    SELECT is_admin
-    FROM trip_members
-    WHERE trip_id = $1
-    AND user_id = $2
-    ` [trip_id, user_id]
-  ).then ((result) => {
-    return result.rows[0].is_admin
-  });
+exports.addTripMember = (trip_id, user_id) => {
+  return db
+    .query(
+      `
+      INSERT INTO trip_members (trip_id, user_id)
+      VALUES ($1, $2)
+      RETURNING *;
+      `,
+      [trip_id, user_id]
+    )
+    .then((result) => result.rows[0]);
 };
 
+exports.fetchTripMembers = (trip_id) => {
+  return db
+    .query(
+      `
+      SELECT trip_members.trip_member_id, trip_members.user_id, trip_members.is_admin, users.name, users.avatar_url
+      FROM trip_members
+      JOIN users ON trip_members.user_id = users.user_id
+      WHERE trip_members.trip_id = $1;
+      `,
+      [trip_id]
+    )
+    .then((result) => result.rows);
+};
+
+exports.deleteTripMember = (trip_id, user_id) => {
+  return db
+    .query(
+      `
+      DELETE FROM trip_members
+      WHERE trip_members.trip_id = $1 AND trip_members.user_id = $2
+      RETURNING *;
+      `,
+      [trip_id, user_id]
+    )
+    .then((result) => result.rows[0]);
+};
