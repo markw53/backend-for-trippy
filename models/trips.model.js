@@ -22,3 +22,13 @@ exports.fetchTrip = (trip_id) => {
       return result.rows[0];
     });
 };
+
+exports.insertTrip = (trip_name, location, description, start_date, end_date, created_by, trip_img_url) => {
+  return db.query(
+    `
+    INSERT INTO trips (trip_name, location, description, start_date, end_date, created_by, trip_img_url)
+    VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *
+    `, [trip_name, location, description, start_date, end_date, created_by, trip_img_url]
+  )
+  .then((result) => result.rows[0])
+}
