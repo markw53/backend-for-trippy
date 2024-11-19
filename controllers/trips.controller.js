@@ -1,13 +1,16 @@
-const { promises } = require("supertest/lib/test");
-const { response } = require("../app");
 const {
   fetchAllTrips,
   fetchTrip,
   insertTrip,
   updateTrip,
   removeTripById,
-  checkIfAdmin
+  addTripMember,
+  fetchTripMembers,
+  deleteTripMember,
 } = require("../models/trips.model");
+
+const checkIfAdmin = require("../utils")
+
 
 exports.getAllTrips = (request, response, next) => {
   fetchAllTrips()
@@ -95,4 +98,38 @@ exports.deleteTrip = (req, res, next) => {
       })
       .catch(next);
   });
+};
+
+exports.inviteUserToTrip = (request, response, next) => {
+  const { trip_id } = request.params;
+  const { user_id } = request.body;
+
+  addTripMember(trip_id, user_id)
+    
+    .then((member) => {
+      response.status(201).send({ member });
+    })
+    .catch(next);
+};
+
+exports.getTripMembers = (request, response, next) => {
+  const { trip_id } = request.params;
+
+  fetchTripMembers(trip_id)
+    .then((members) => {
+      response.status(200).send({ members });
+    })
+    .catch(next);
+};
+
+exports.removeTripMember = (request, response, next) => {
+  const { trip_id } = request.params;
+  const { user_id } = request.body;
+
+  deleteTripMember(trip_id, user_id)
+  
+    .then(() => {
+      response.status(200).send({ msg: "User Was Removed From Trip"});
+    })
+    .catch(next);
 };
