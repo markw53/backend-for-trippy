@@ -6,6 +6,7 @@ const {
   deleteActivity,
   getItinerary,
   getActivityById,
+  getPossibility,
 } = require("../controllers/activities.controller");
 
 const activitiesRouter = express.Router({ mergeParams: true });
@@ -13,10 +14,9 @@ const activitiesRouter = express.Router({ mergeParams: true });
 activitiesRouter.get("/", getActivities);
 activitiesRouter.post("/", addActivity);
 activitiesRouter.get("/itinerary", getItinerary);
-
+activitiesRouter.get("/possibility", getPossibility);
 activitiesRouter.get("/:activity_id", getActivityById);
 activitiesRouter.patch("/:activity_id", updateActivity);
 activitiesRouter.delete("/:activity_id", deleteActivity);
-
 
 module.exports = activitiesRouter;

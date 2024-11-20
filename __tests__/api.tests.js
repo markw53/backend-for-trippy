@@ -227,7 +227,7 @@ describe("POST /api/trips", () => {
       description: "A relaxing trip to the Maldives",
       start_date: "2024-12-01",
       end_date: "2024-12-15",
-      created_by: 1, 
+      created_by: 1,
       trip_img_url: "https://example.com/trip.jpg",
     };
 
@@ -235,17 +235,23 @@ describe("POST /api/trips", () => {
       .post("/api/trips")
       .send(newTrip)
       .expect(201)
-      .then(( {body} ) => {
+      .then(({ body }) => {
         const { trip } = body;
         expect(trip).toHaveProperty("trip_id", expect.any(Number));
         expect(trip).toHaveProperty("trip_name", "Beach Bonanza");
         expect(trip).toHaveProperty("location", "Maldives");
-        expect(trip).toHaveProperty("description", "A relaxing trip to the Maldives");
+        expect(trip).toHaveProperty(
+          "description",
+          "A relaxing trip to the Maldives"
+        );
         expect(trip).toHaveProperty("start_date", "2024-12-01T00:00:00.000Z");
         expect(trip).toHaveProperty("end_date", "2024-12-15T00:00:00.000Z");
         expect(trip).toHaveProperty("created_by", 1);
         expect(trip).toHaveProperty("created_at", expect.any(String));
-        expect(trip).toHaveProperty("trip_img_url", "https://example.com/trip.jpg");
+        expect(trip).toHaveProperty(
+          "trip_img_url",
+          "https://example.com/trip.jpg"
+        );
       });
   });
 
@@ -273,7 +279,7 @@ describe("POST /api/trips", () => {
       description: "Trying to create a trip with a non-existent user",
       start_date: "2024-12-01",
       end_date: "2024-12-15",
-      created_by: 9999, 
+      created_by: 9999,
       trip_img_url: "https://example.com/non-existent-user-trip.jpg",
     };
 
@@ -285,8 +291,6 @@ describe("POST /api/trips", () => {
         expect(body.msg).toBe("400: Bad Request - User does not exist");
       });
   });
-
-
 });
 
 describe("GET /api/trips/trip_id", () => {
@@ -612,12 +616,58 @@ describe("GET /api/trips/:trip_id/activities/itinerary", () => {
       .get("/api/trips/1/activities/itinerary")
       .expect(200)
       .then(({ body }) => {
-        const { activities } = body
-        console.log(body, "<<<body")
+        const { activities } = body;
         expect(Array.isArray(activities)).toBe(true);
         activities.map((activity) => {
           expect(activity.in_itinerary).toBe(true);
         });
+      });
+  });
+  it("400: responds with an error if trip_id is invalid", () => {
+    return request(app)
+      .get("/api/trips/not_a_valid_id/activities/itinerary")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("400: Bad Request");
+      });
+  });
+  it("404: responds with an error if trip_id is valid but does not exist", () => {
+    return request(app)
+      .get("/api/trips/9999/activities/itinerary")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("404: Not Found");
+      });
+  });
+});
+
+describe("GET /api/trips/:trip_id/activities/possibility", () => {
+  it("200: returns an array of activities that are in the itinerary", () => {
+    return request(app)
+      .get("/api/trips/1/activities/possibility")
+      .expect(200)
+      .then(({ body }) => {
+        const { activities } = body;
+        expect(Array.isArray(activities)).toBe(true);
+        activities.map((activity) => {
+          expect(activity.in_itinerary).toBe(false);
+        });
+      });
+  });
+  it("400: responds with an error if trip_id is invalid", () => {
+    return request(app)
+      .get("/api/trips/not_a_valid_id/activities/possibility")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("400: Bad Request");
+      });
+  });
+  it("404: responds with an error if trip_id is valid but does not exist", () => {
+    return request(app)
+      .get("/api/trips/9999/activities/possibility")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("404: Not Found");
       });
   });
 });
