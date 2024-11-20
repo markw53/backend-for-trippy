@@ -1,8 +1,10 @@
 const {
   fetchAllActivities,
+  fetchActivityById,
   insertActivity,
   updateActivity,
   removeActivityById,
+  fetchItinerary,
 } = require("../models/activities.model");
 
 exports.getActivities = (request, response, next) => {
@@ -14,10 +16,18 @@ exports.getActivities = (request, response, next) => {
     })
     .catch(next);
 };
+exports.getActivityById = (request, response, next) => {
+  const { activity_id } = request.params;
+  fetchActivityById(activity_id)
+    .then(activity => {
+      response.status(200).send({ activity });
+    })
+    .catch(next);
+};
 
 exports.addActivity = (request, response, next) => {
   const { trip_id } = request.params;
-  const { activity_name, description, date, time} = request.body;
+  const { activity_name, description, date, time } = request.body;
 
   insertActivity(trip_id, activity_name, description, date, time)
     .then((activity) => {
@@ -43,6 +53,15 @@ exports.deleteActivity = (request, response, next) => {
   removeActivityById(activity_id)
     .then(() => {
       response.status(200).send({ msg: "Activity deleted successfully" });
+    })
+    .catch(next);
+};
+
+exports.getItinerary = (request, response, next) => {
+  const { trip_id } = request.params;
+  fetchItinerary(trip_id)
+    .then((activities) => {
+      response.status(200).send({ activities });
     })
     .catch(next);
 };
