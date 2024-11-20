@@ -14,8 +14,8 @@ exports.fetchAllActivities = (trip_id) => {
         return Promise.reject({ status: 404, msg: "Trip not found" });
       }
       return result.rows;
-
-})};
+    });
+};
 exports.fetchActivityById = (activity_id) => {
   return db
     .query(`SELECT * FROM activities WHERE activity_id = $1`, [activity_id])
@@ -97,7 +97,7 @@ exports.fetchItinerary = (trip_id) => {
   return db
     .query(
       `
-    SELECT * FROM activities WHERE is_itinerary = t AND trip_id = $1
+    SELECT * FROM activities WHERE in_itinerary = true AND trip_id = $1
     `,
       [trip_id]
     )
