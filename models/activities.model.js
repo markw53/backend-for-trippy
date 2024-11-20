@@ -14,6 +14,16 @@ exports.fetchAllActivities = (trip_id) => {
       }
       return result.rows;
 })};
+exports.fetchActivityById = (activity_id) => {
+  return db
+    .query(`SELECT * FROM activities WHERE activity_id = $1`, [activity_id])
+    .then((result) => {
+      if (result.rows.length === 0) {
+        return Promise.reject({ status: 404, msg: "Activity not found" });
+      }
+      return result.rows[0];
+    });
+};
 
 exports.insertActivity = (trip_id, activity_name, description, date, time) => {
 
