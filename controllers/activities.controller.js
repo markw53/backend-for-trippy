@@ -5,6 +5,7 @@ const {
   updateActivity,
   removeActivityById,
   fetchItinerary,
+  fetchPossibility,
 } = require("../models/activities.model");
 
 exports.getActivities = (request, response, next) => {
@@ -19,7 +20,7 @@ exports.getActivities = (request, response, next) => {
 exports.getActivityById = (request, response, next) => {
   const { activity_id } = request.params;
   fetchActivityById(activity_id)
-    .then(activity => {
+    .then((activity) => {
       response.status(200).send({ activity });
     })
     .catch(next);
@@ -60,6 +61,15 @@ exports.deleteActivity = (request, response, next) => {
 exports.getItinerary = (request, response, next) => {
   const { trip_id } = request.params;
   fetchItinerary(trip_id)
+    .then((activities) => {
+      response.status(200).send({ activities });
+    })
+    .catch(next);
+};
+
+exports.getPossibility = (request, response, next) => {
+  const { trip_id } = request.params;
+  fetchPossibility(trip_id)
     .then((activities) => {
       response.status(200).send({ activities });
     })
