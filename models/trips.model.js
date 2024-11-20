@@ -32,42 +32,49 @@ exports.insertTrip = (
   created_by,
   trip_img_url
 ) => {
-  if (!trip_name || !location || !start_date || !end_date || !created_by) {
+  if (!trip_name || !location || !start_date || !created_by) {
     return Promise.reject({
       status: 400,
-      msg: "Missing required fields: trip_name, location, start_date, end_date, created_by are mandatory",
+      msg: "Missing required fields: trip_name, location, start_date, created_by are mandatory",
     });
   }
   return db
-    .query(
-      `
-    INSERT INTO trips (trip_name, location, description, start_date, end_date, created_by, trip_img_url)
-    VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *
-    `,
-      [
-        trip_name,
-        location,
-        description,
-        start_date,
-        end_date,
-        created_by,
-        trip_img_url,
-      ]
-    )
-
-    .then((result) => {
-      const { trip_id } = result.rows[0];
-
+    .query(`SELECT * FROM users WHERE user_id = $1`, [created_by])
+    .then((userResult) => {
+      if (userResult.rows.length === 0) {
+        return Promise.reject({
+          status: 400,
+          msg: "400: Bad Request - User does not exist",
+        });
+      }
       return db.query(
         `
-        INSERT INTO trip_members (trip_id, user_id, admin)
-        VALUES ($1, $2, $3)
-        RETURNING *;
+        INSERT INTO trips (trip_name, location, description, start_date, end_date, created_by, trip_img_url)
+        VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;
         `,
-        [trip_id, created_by, true]
+        [
+          trip_name,
+          location,
+          description,
+          start_date,
+          end_date,
+          created_by,
+          trip_img_url,
+        ]
       );
     })
-    .then((result) => result.rows[0]);
+    .then((result) => {
+      const trip = result.rows[0];
+      return db
+        .query(
+          `
+          INSERT INTO trip_members (trip_id, user_id, is_admin)
+          VALUES ($1, $2, $3);
+          `,
+          [trip.trip_id, created_by, true]
+        )
+        .then(() => trip); 
+    });
 };
 
 exports.updateTrip = (
