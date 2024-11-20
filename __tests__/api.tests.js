@@ -374,7 +374,7 @@ describe("POST /api/trips/:trip_id/activities", () => {
       activity_name: "Hiking",
       description: "Mountain hike",
       date: "2024-11-21T00:00:00.000Z",
-      time: "10:00:00"
+      time: "10:00:00",
     };
 
     return request(app)
@@ -388,7 +388,7 @@ describe("POST /api/trips/:trip_id/activities", () => {
         expect(activity).toHaveProperty("activity_name", "Hiking");
         expect(activity).toHaveProperty("description", "Mountain hike");
         expect(activity).toHaveProperty("date", "2024-11-21T00:00:00.000Z");
-        
+
         expect(activity).toHaveProperty("time", "10:00:00");
         expect(activity).toHaveProperty("activity_img_url", expect.any(String));
         expect(activity).toHaveProperty("created_at", expect.any(String));
@@ -491,6 +491,20 @@ describe("DELETE /api/trips/:trip_id/activities/:activity_id", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("400: Bad Request");
+      });
+  });
+});
+
+describe("GET /api/trips/:trip_id/activities/itinerary", () => {
+  it("200: returns an array of activities that are in the itinerary", () => {
+    return request(app)
+      .get("/api/trips/1/activities/itinerary")
+      .expect(200)
+      .then(({ body }) => {
+        expect(Array.isArray(body)).toBe(true);
+        body.map((activity) => {
+          expect(activity.in_itinerary).toBe(true);
+        });
       });
   });
 });
