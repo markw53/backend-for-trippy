@@ -612,8 +612,10 @@ describe("GET /api/trips/:trip_id/activities/itinerary", () => {
       .get("/api/trips/1/activities/itinerary")
       .expect(200)
       .then(({ body }) => {
-        expect(Array.isArray(body)).toBe(true);
-        body.map((activity) => {
+        const { activities } = body
+        console.log(body, "<<<body")
+        expect(Array.isArray(activities)).toBe(true);
+        activities.map((activity) => {
           expect(activity.in_itinerary).toBe(true);
         });
       });

@@ -102,6 +102,6 @@ exports.fetchItinerary = (trip_id) => {
       [trip_id]
     )
     .then((result) => {
-      return result.rows[0];
+      return result.rows;
     });
 };
