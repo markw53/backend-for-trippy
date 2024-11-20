@@ -37,12 +37,13 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData }) => {
         CREATE TABLE activities (
           activity_id SERIAL PRIMARY KEY,
           trip_id INT REFERENCES trips(trip_id) ON DELETE CASCADE,
+          activity_name VARCHAR(255) NOT NULL,
           in_itinerary BOOLEAN DEFAULT FALSE,
           created_at TIMESTAMP DEFAULT NOW(),
           date DATE NOT NULL,
           time TIME,
           description TEXT,
-          votes INT DEFAULT 0 NOT NULL,
+          votes INT DEFAULT 0,
           activity_img_url VARCHAR DEFAULT 'https://images.pexels.com/photos/97050/pexels-photo-97050.jpeg?w=700&h=700'
         );`);
     })
@@ -88,12 +89,13 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData }) => {
       return db.query(insertTripQueryStr);
     })
     .then(() => {
-      const formattedActivityData = activitiesData.map(convertTimestampToDate);
+      const formattedActivityData = activitiesData.activitiesData.map(convertTimestampToDate);
       const insertActivitiesQueryStr = format(
-        "INSERT INTO activities (trip_id, in_itinerary, date, time, description, votes, activity_img_url) VALUES %L;",
+        "INSERT INTO activities (trip_id, activity_name, in_itinerary, date, time, description, votes, activity_img_url) VALUES %L;",
         formattedActivityData.map(
           ({
             trip_id,
+            activity_name,
             in_itinerary,
             date,
             time,
@@ -102,6 +104,7 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData }) => {
             activity_img_url,
           }) => [
             trip_id,
+            activity_name,
             in_itinerary,
             date,
             time,

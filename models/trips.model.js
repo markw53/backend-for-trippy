@@ -56,8 +56,8 @@ exports.insertTrip = (
     )
 
     .then((result) => {
-      const { trip_id } = result.rows[0]
-  
+      const { trip_id } = result.rows[0];
+
       return db.query(
         `
         INSERT INTO trip_members (trip_id, user_id, admin)
@@ -68,8 +68,7 @@ exports.insertTrip = (
       );
     })
     .then((result) => result.rows[0]);
-  
-    }
+};
 
 exports.updateTrip = (
   trip_id,
@@ -119,6 +118,12 @@ exports.removeTripById = (trip_id) => {
 };
 
 exports.addTripMember = (trip_id, user_id) => {
+  if (!user_id) {
+    return Promise.reject({
+      status: 400,
+      msg: "400: Bad Request - Missing required field: user_id",
+    });
+  }
   return db
     .query(
       `
@@ -133,19 +138,32 @@ exports.addTripMember = (trip_id, user_id) => {
 
 exports.fetchTripMembers = (trip_id) => {
   return db
-    .query(
-      `
+    .query(`SELECT * FROM trips WHERE trip_id = $1`, [trip_id])
+    .then((result) => {
+      if (result.rows.length === 0) {
+        return Promise.reject({ status: 404, msg: "Trip not found" });
+      }
+
+      return db
+        .query(
+          `
       SELECT trip_members.trip_member_id, trip_members.user_id, trip_members.is_admin, users.name, users.avatar_url
       FROM trip_members
       JOIN users ON trip_members.user_id = users.user_id
       WHERE trip_members.trip_id = $1;
       `,
-      [trip_id]
-    )
-    .then((result) => result.rows);
+          [trip_id]
+        )
+        .then((result) => result.rows);
+    });
 };
 
 exports.deleteTripMember = (trip_id, user_id) => {
+  if (!trip_id || !user_id) {
+    return Promise.reject({
+      status: 404,
+      msg: "Missing required fields: trip_id and user_id are mandatory",
+    }) }
   return db
     .query(
       `

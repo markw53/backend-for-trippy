@@ -129,7 +129,7 @@ exports.removeTripMember = (request, response, next) => {
   deleteTripMember(trip_id, user_id)
   
     .then(() => {
-      response.status(200).send({ msg: "User Was Removed From Trip"});
+      response.status(200).send({ msg: "User Was Removed From The Trip"});
     })
     .catch(next);
 };
