@@ -4,11 +4,8 @@ const {
   addActivity,
   updateActivity,
   deleteActivity,
-
   getItinerary,
-
   getActivityById,
-
 } = require("../controllers/activities.controller");
 
 const activitiesRouter = express.Router({ mergeParams: true });
