@@ -48,7 +48,7 @@ exports.createTrip = (request, response, next) => {
     created_by,
     trip_img_url
   )
-    .then(trip => {
+    .then((trip) => {
       response.status(201).send({ trip });
     })
     .catch(next);

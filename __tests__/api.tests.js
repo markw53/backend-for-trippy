@@ -219,6 +219,75 @@ describe("GET /api/trips", () => {
       });
   });
 });
+describe("POST /api/trips", () => {
+  it("201: creates a new trip and returns the created trip with its properties", () => {
+    const newTrip = {
+      trip_name: "Beach Bonanza",
+      location: "Maldives",
+      description: "A relaxing trip to the Maldives",
+      start_date: "2024-12-01",
+      end_date: "2024-12-15",
+      created_by: 1, 
+      trip_img_url: "https://example.com/trip.jpg",
+    };
+
+    return request(app)
+      .post("/api/trips")
+      .send(newTrip)
+      .expect(201)
+      .then(( {body} ) => {
+        const { trip } = body;
+        expect(trip).toHaveProperty("trip_id", expect.any(Number));
+        expect(trip).toHaveProperty("trip_name", "Beach Bonanza");
+        expect(trip).toHaveProperty("location", "Maldives");
+        expect(trip).toHaveProperty("description", "A relaxing trip to the Maldives");
+        expect(trip).toHaveProperty("start_date", "2024-12-01T00:00:00.000Z");
+        expect(trip).toHaveProperty("end_date", "2024-12-15T00:00:00.000Z");
+        expect(trip).toHaveProperty("created_by", 1);
+        expect(trip).toHaveProperty("created_at", expect.any(String));
+        expect(trip).toHaveProperty("trip_img_url", "https://example.com/trip.jpg");
+      });
+  });
+
+  it("400: responds with an error when required fields are missing", () => {
+    const incompleteTrip = {
+      location: "Maldives",
+      description: "Missing required fields",
+    };
+
+    return request(app)
+      .post("/api/trips")
+      .send(incompleteTrip)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe(
+          "Missing required fields: trip_name, location, start_date, created_by are mandatory"
+        );
+      });
+  });
+
+  it("400: responds with an error when created_by references a non-existent user", () => {
+    const nonExistentUserTrip = {
+      trip_name: "Non-existent User Test",
+      location: "Nowhere",
+      description: "Trying to create a trip with a non-existent user",
+      start_date: "2024-12-01",
+      end_date: "2024-12-15",
+      created_by: 9999, 
+      trip_img_url: "https://example.com/non-existent-user-trip.jpg",
+    };
+
+    return request(app)
+      .post("/api/trips")
+      .send(nonExistentUserTrip)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("400: Bad Request - User does not exist");
+      });
+  });
+
+
+});
 
 describe("GET /api/trips/trip_id", () => {
   it("200: returns a single user object based a trip id", () => {
