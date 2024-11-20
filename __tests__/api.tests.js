@@ -441,7 +441,7 @@ describe("GET /api/trips/:trip_id/activities", () => {
       });
   });
 });
-describe("GET /api/trips/1/activities/:activity_id", () => {
+describe("GET /api/trips/:trip_id/activities/:activity_id", () => {
   it("200: responds with the activity object for a valid activity_id", () => {
     return request(app)
       .get("/api/trips/1/activities/1")
