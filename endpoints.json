@@ -193,5 +193,74 @@
     "exampleResponse": {
       "msg": "User was removed from the trip"
     }
+  },
+
+"GET /api/trips/:trip_id/activities": {
+  "description": "Retrieve all activities for a specific trip.",
+  "exampleResponse": [
+    {
+      "activity_id": 1,
+      "trip_id": 1,
+      "activity_name": "Snorkeling",
+      "description": "Explore coral reefs and marine life.",
+      "date": "2024-03-10T00:00:00.000Z",
+      "time": "10:00:00",
+      "activity_img_url": "https://example.com/snorkeling.jpg",
+      "created_at": "2024-11-20T02:06:32.400Z",
+      "in_itinerary": true,
+      "votes": 15
+    }
+  ]
+},
+"POST /api/trips/:trip_id/activities": {
+  "description": "Create a new activity for a specific trip.",
+  "exampleRequest": {
+    "activity_name": "Hiking",
+    "description": "Mountain hike",
+    "date": "2024-11-21T00:00:00.000Z",
+    "time": "10:00:00"
+  },
+  "exampleResponse": {
+    "activity": {
+      "activity_id": 1,
+      "trip_id": 1,
+      "activity_name": "Hiking",
+      "description": "Mountain hike",
+      "date": "2024-11-21T00:00:00.000Z",
+      "time": "10:00:00",
+      "activity_img_url": "https://example.com/hiking.jpg",
+      "created_at": "2024-11-20T12:00:00.000Z",
+      "in_itinerary": false,
+      "votes": 0
+    }
   }
-}
+},
+"PATCH /api/trips/:trip_id/activities/:activity_id": {
+  "description": "Update details of a specific activity.",
+  "exampleRequest": {
+    "activity_name": "Updated Activity",
+    "description": "Updated Description",
+    "date": "2024-12-01T00:00:00.000Z",
+    "time": "15:00:00"
+  },
+  "exampleResponse": {
+    "activity": {
+      "activity_id": 1,
+      "trip_id": 1,
+      "activity_name": "Updated Activity",
+      "description": "Updated Description",
+      "date": "2024-12-01T00:00:00.000Z",
+      "time": "15:00:00",
+      "activity_img_url": "https://example.com/updated.jpg",
+      "created_at": "2024-11-20T02:06:32.400Z",
+      "in_itinerary": true,
+      "votes": 20
+    }
+  }
+},
+"DELETE /api/trips/:trip_id/activities/:activity_id": {
+  "description": "Delete a specific activity by ID.",
+  "exampleResponse": {
+    "msg": "Activity deleted successfully"
+  }
+}}

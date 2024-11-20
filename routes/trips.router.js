@@ -1,4 +1,7 @@
 const express = require("express");
+
+const activitiesRouter = require("./activities.router");
+
 const {
   getAllTrips,
   getTrip,
@@ -11,6 +14,8 @@ const {
 } = require("../controllers/trips.controller");
 
 const tripsRouter = express.Router();
+tripsRouter.use("/:trip_id/activities", activitiesRouter);
+
 
 tripsRouter.get("/", getAllTrips);
 tripsRouter.post("/", createTrip);
