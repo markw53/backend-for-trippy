@@ -67,3 +67,16 @@ exports.changeUserById = (user_id, body) => {
       }
     });
   }
+  
+  exports.fetchUserIdByEmail = (email) => {
+    return db.query(
+      `
+      SELECT user_id FROM users WHERE email = $1
+      `, [email]
+    ).then((result)=>{
+      if (result.rows.length === 0) {
+    return Promise.reject({ status: 404, msg: "404: Not Found" });
+  }
+  return result.rows[0];
+});
+  }

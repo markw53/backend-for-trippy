@@ -671,3 +671,27 @@ describe("GET /api/trips/:trip_id/activities/possibility", () => {
       });
   });
 });
+describe("GET /api/users/email/:email", () => {
+  it("200: returns the user ID when a valid email is provided", () => {
+    return request(app)
+      .get("/api/users/email/abdiaziz@northcoders.co.uk") 
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toEqual({
+          userId: {
+            user_id: expect.any(Number), 
+          },
+        });
+      });
+  });
+
+  it("404: responds with an error when the email does not exist", () => {
+    return request(app)
+      .get("/api/users/by-email/nonexistent@example.com")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("404: Not Found");
+      });
+  });
+
+});
