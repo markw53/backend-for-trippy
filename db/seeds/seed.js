@@ -14,7 +14,7 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData }) => {
           user_id SERIAL PRIMARY KEY,
           name VARCHAR NOT NULL,
           avatar_url VARCHAR,
-          email VARCHAR(100),
+          email VARCHAR(100) UNIQUE,
           created_at TIMESTAMP DEFAULT NOW()
         );`);
     })
