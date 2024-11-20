@@ -1,5 +1,6 @@
 const {
   fetchAllActivities,
+  fetchActivityById,
   insertActivity,
   updateActivity,
   removeActivityById,
@@ -11,6 +12,14 @@ exports.getActivities = (request, response, next) => {
   fetchAllActivities(trip_id)
     .then((activities) => {
       response.status(200).send({ activities });
+    })
+    .catch(next);
+};
+exports.getActivityById = (request, response, next) => {
+  const { activity_id } = request.params;
+  fetchActivityById(activity_id)
+    .then(activity => {
+      response.status(200).send({ activity });
     })
     .catch(next);
 };
