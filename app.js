@@ -5,6 +5,7 @@ const { getEndPoints } = require("./controllers/endPoints.controller");
 
 const usersRouter = require("./routes/users.router");
 const tripsRouter = require("./routes/trips.router");
+const messagesRouter = require("./routes/messages.router")
 
 app.use(cors());
 app.use(express.json());
@@ -12,6 +13,7 @@ app.use(express.json());
 app.get("/api", getEndPoints);
 app.use("/api/users", usersRouter);
 app.use("/api/trips", tripsRouter);
+app.use("/api/rooms", messagesRouter);
 
 app.all("*", (request, response) => {
   response.status(404).send({ msg: "404: Not Found" });

@@ -30,6 +30,46 @@
       "email": "abdiaziz@northcoders.co.uk"
     }
   },
+"GET /api/users/email/:email": {
+  "description": "Retrieve the user ID associated with a specific email address.",
+  "exampleRequest": {
+    "email": "exampleuser@email.com"
+  },
+  "exampleResponse": {
+    "user_id": 3
+  },
+  "queries": [],
+  "statusCodes": {
+    "200": "Successfully retrieved the user ID for the provided email.",
+    "404": "No user found with the provided email address."
+  }
+},
+  "GET /api/users/:user_id/trips": {
+    "description": "Retrieve all trips associated with a specific user by their user ID.",
+    "exampleRequest": {
+      "user_id": 1
+    },
+    "exampleResponse": {
+      "trips": [
+        {
+          "trip_member_id": 1,
+          "user_id": 1,
+          "trip_id": 2,
+          "is_admin": true
+        },
+        {
+          "trip_member_id": 2,
+          "user_id": 1,
+          "trip_id": 3,
+          "is_admin": false
+        }
+      ]
+    },
+    "statusCodes": {
+      "200": "Successfully retrieved trips for the specified user ID.",
+      "404": "No trips found for the specified user ID."
+    }
+  },
   "POST /api/users": {
     "description": "serves a new user object",
     "queries": [],
@@ -335,44 +375,55 @@
     ]
   }
 },
-"GET /api/users/email/:email": {
-  "description": "Retrieve the user ID associated with a specific email address.",
+"GET /api/rooms/:room_id/messages": {
+  "description": "Retrieve all messages for a specific room.",
+  "queries": [],
   "exampleRequest": {
-    "email": "exampleuser@email.com"
+    "room_id": 1
   },
   "exampleResponse": {
-    "user_id": 3
+    "messages": [
+      {
+        "message_id": 1,
+        "user_name": "Alice",
+        "avatar_url": "https://example.com/avatar/alice.png",
+        "content": "Hello, everyone! Excited for the trip!",
+        "timestamp": "2024-11-21T10:00:00.000Z"
+      },
+      {
+        "message_id": 2,
+        "user_name": "Bob",
+        "avatar_url": "https://example.com/avatar/bob.png",
+        "content": "Hi, this trip is going to be amazing!",
+        "timestamp": "2024-11-21T10:05:00.000Z"
+      }
+    ]
   },
-  "queries": [],
   "statusCodes": {
-    "200": "Successfully retrieved the user ID for the provided email.",
-    "404": "No user found with the provided email address."
+    "200": "Messages retrieved successfully.",
+    "404": "No messages found for this room."
   }
 },
-  "GET /api/users/:user_id/trips": {
-    "description": "Retrieve all trips associated with a specific user by their user ID.",
-    "exampleRequest": {
-      "user_id": 1
-    },
-    "exampleResponse": {
-      "trips": [
-        {
-          "trip_member_id": 1,
-          "user_id": 1,
-          "trip_id": 2,
-          "is_admin": true
-        },
-        {
-          "trip_member_id": 2,
-          "user_id": 1,
-          "trip_id": 3,
-          "is_admin": false
-        }
-      ]
-    },
-    "statusCodes": {
-      "200": "Successfully retrieved trips for the specified user ID.",
-      "404": "No trips found for the specified user ID."
+"POST /api/rooms/:room_id/messages": {
+  "description": "Post a new message to a specific room.",
+  "queries": [],
+  "exampleRequest": {
+    "user_id": 1,
+    "content": "Looking forward to the trip!"
+  },
+  "exampleResponse": {
+    "message": {
+      "message_id": 3,
+      "user_id": 1,
+      "room_id": 1,
+      "content": "Looking forward to the trip!",
+      "timestamp": "2024-11-21T10:30:00.000Z"
     }
+  },
+  "statusCodes": {
+    "201": "Message posted successfully.",
+    "400": "Bad request. Ensure user_id and content are provided.",
+    "404": "Room not found."
   }
+}
 }

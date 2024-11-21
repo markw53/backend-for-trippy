@@ -1,6 +1,6 @@
 const { Server } = require("socket.io");
 
-function initializeSocketServer(server) {
+function initialiseSocketServer(server) {
   const io = new Server(server, {
     cors: {
       origin: "*",// CHANGE THIS BEFORE PRODUCTION
@@ -23,4 +23,4 @@ function initializeSocketServer(server) {
   return io;
 }
 
-module.exports = initializeSocketServer;
+module.exports = initialiseSocketServer;
