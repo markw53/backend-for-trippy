@@ -8,6 +8,8 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData }) => {
     .then(() => db.query(`DROP TABLE IF EXISTS trip_members;`))
     .then(() => db.query(`DROP TABLE IF EXISTS trips;`))
     .then(() => db.query(`DROP TABLE IF EXISTS users;`))
+    .then(() => db.query(`DROP TABLE IF EXISTS rooms;`))
+    .then(() => db.query(`DROP TABLE IF EXISTS messages;`))
     .then(() => {
       return db.query(`
         CREATE TABLE users (
@@ -57,6 +59,25 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData }) => {
         );`);
     })
     .then(() => {
+      return db.query(`
+        CREATE TABLE rooms (
+        room_id SERIAL PRIMARY KEY,
+        room_name VARCHAR(50) NOT NULL UNIQUE
+        );
+        `)
+    })
+    .then(() => {
+      return db.query(`
+        CREATE TABLE messages (
+          message_id SERIAL PRIMARY KEY,
+          user_id INT, -- Foreign key to users table, nullable
+          room_id INT, -- Foreign key to rooms table, nullable
+          content TEXT NOT NULL,
+          timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+`);
+    })
+    .then(() => {
       const insertUserQueryStr = format(
         "INSERT INTO users (name, avatar_url, email) VALUES %L;",
         userData.map(({ name, avatar_url, email }) => [name, avatar_url, email])
@@ -89,7 +110,9 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData }) => {
       return db.query(insertTripQueryStr);
     })
     .then(() => {
-      const formattedActivityData = activitiesData.activitiesData.map(convertTimestampToDate);
+      const formattedActivityData = activitiesData.activitiesData.map(
+        convertTimestampToDate
+      );
       const insertActivitiesQueryStr = format(
         "INSERT INTO activities (trip_id, activity_name, in_itinerary, date, time, description, votes, activity_img_url) VALUES %L;",
         formattedActivityData.map(
