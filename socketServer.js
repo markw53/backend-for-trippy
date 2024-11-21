@@ -1,30 +1,26 @@
-const http = require('http');
-const { Server } = require('socket.io');
-const express = require('express');
+const { Server } = require("socket.io");
 
-const initializeSocketServer = (app) => {
-  const server = http.createServer(app);
+function initializeSocketServer(server) {
   const io = new Server(server, {
     cors: {
-      origin: "*", 
-      methods: ["GET", "POST"],
+      origin: "*",// CHANGE THIS BEFORE PRODUCTION
     },
   });
 
-  io.on('connection', (socket) => {
-    console.log('A user connected', socket.id);
+  io.on("connection", (socket) => {
+    console.log(`New WebSocket connection: ${socket.id}`);
 
-    socket.on('send_message', (data) => {
-      console.log('Message received:', data);
-      io.emit('receive_message', data); 
+    socket.on("message", (msg) => {
+      console.log(`Message received: ${msg}`);
+      io.emit("message", msg); 
     });
 
-    socket.on('disconnect', () => {
-      console.log('A user disconnected', socket.id);
+    socket.on("disconnect", () => {
+      console.log(`Socket disconnected: ${socket.id}`);
     });
   });
 
-  return server;
-};
+  return io;
+}
 
 module.exports = initializeSocketServer;

@@ -2,7 +2,6 @@ const cors = require("cors");
 const express = require("express");
 const app = express();
 const { getEndPoints } = require("./controllers/endPoints.controller");
-const initializeSocketServer = require('./socketServer')
 
 const usersRouter = require("./routes/users.router");
 const tripsRouter = require("./routes/trips.router");
@@ -30,11 +29,6 @@ app.use((error, request, response, next) => {
   }
 });
 
-const socketServer = initializeSocketServer(app)
-const PORT = 9090;
-socketServer.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-})
 
 
 
