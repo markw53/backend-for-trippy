@@ -80,3 +80,16 @@ exports.changeUserById = (user_id, body) => {
   return result.rows[0];
 });
   }
+
+  exports.fetchTripsByUserId = (user_id) => {
+    return db
+    .query(`
+      SELECT * FROM trip_members WHERE user_id = $1
+      `, [user_id])
+      .then((result) => {
+        if (result.rows.length === 0) {
+          return Promise.reject({ status: 404, msg: "404: Not Found" });
+        }
+        return result.rows
+      })
+  }

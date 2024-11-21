@@ -5,6 +5,7 @@ const {
   changeUserById,
   removeUser,
   fetchUserIdByEmail,
+  fetchTripsByUserId
 } = require("../models/users.model");
 
 exports.getAllUsers = (request, response, next) => {
@@ -52,10 +53,18 @@ exports.deleteUser = (request, response, next)=>{
 }
 exports.getUserIdByEmail = (request, response, next) => {
   const { email } = request.params
-  console.log(email)
   fetchUserIdByEmail(email)
   .then((userId) => {
     response.status(200).send({userId})
   })
+  .catch(next)
+}
+
+exports.getTripsByUserId = (request, response, next) => {
+  const { user_id } = request.params
+  fetchTripsByUserId(user_id)
+  .then((trips) => {
+    response.status(200).send({trips})
+  }) 
   .catch(next)
 }

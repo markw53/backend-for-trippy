@@ -348,5 +348,31 @@
     "200": "Successfully retrieved the user ID for the provided email.",
     "404": "No user found with the provided email address."
   }
-}
+},
+  "GET /api/users/:user_id/trips": {
+    "description": "Retrieve all trips associated with a specific user by their user ID.",
+    "exampleRequest": {
+      "user_id": 1
+    },
+    "exampleResponse": {
+      "trips": [
+        {
+          "trip_member_id": 1,
+          "user_id": 1,
+          "trip_id": 2,
+          "is_admin": true
+        },
+        {
+          "trip_member_id": 2,
+          "user_id": 1,
+          "trip_id": 3,
+          "is_admin": false
+        }
+      ]
+    },
+    "statusCodes": {
+      "200": "Successfully retrieved trips for the specified user ID.",
+      "404": "No trips found for the specified user ID."
+    }
+  }
 }
