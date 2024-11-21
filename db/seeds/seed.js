@@ -2,14 +2,14 @@ const format = require("pg-format");
 const db = require("../connection");
 const { convertTimestampToDate } = require("./utils");
 
-const seed = ({ userData, tripsData, tripMembersData, activitiesData }) => {
+const seed = ({ userData, tripsData, tripMembersData, activitiesData, roomsData, messagesData }) => {
   return db
-    .query(`DROP TABLE IF EXISTS activities;`)
-    .then(() => db.query(`DROP TABLE IF EXISTS trip_members;`))
-    .then(() => db.query(`DROP TABLE IF EXISTS trips;`))
-    .then(() => db.query(`DROP TABLE IF EXISTS users;`))
-    .then(() => db.query(`DROP TABLE IF EXISTS rooms;`))
-    .then(() => db.query(`DROP TABLE IF EXISTS messages;`))
+  .query(`DROP TABLE IF EXISTS messages CASCADE;`)
+  .then(() => db.query(`DROP TABLE IF EXISTS rooms CASCADE;`))
+  .then(() => db.query(`DROP TABLE IF EXISTS activities CASCADE;`))
+  .then(() => db.query(`DROP TABLE IF EXISTS trip_members CASCADE;`))
+  .then(() => db.query(`DROP TABLE IF EXISTS trips CASCADE;`))
+  .then(() => db.query(`DROP TABLE IF EXISTS users CASCADE;`))
     .then(() => {
       return db.query(`
         CREATE TABLE users (
@@ -22,17 +22,17 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData }) => {
     })
     .then(() => {
       return db.query(`
-          CREATE TABLE trips (
-            trip_id SERIAL PRIMARY KEY,
-            trip_name VARCHAR(100) NOT NULL,
-            location VARCHAR(100) NOT NULL,
-            description TEXT,
-            start_date DATE NOT NULL,
-            end_date DATE,
-            created_by INT REFERENCES users(user_id) ON DELETE CASCADE,
-            created_at TIMESTAMP DEFAULT NOW(),
-            trip_img_url VARCHAR(100)
-          );`);
+        CREATE TABLE trips (
+          trip_id SERIAL PRIMARY KEY,
+          trip_name VARCHAR(100) NOT NULL,
+          location VARCHAR(100) NOT NULL,
+          description TEXT,
+          start_date DATE NOT NULL,
+          end_date DATE,
+          created_by INT REFERENCES users(user_id) ON DELETE CASCADE,
+          created_at TIMESTAMP DEFAULT NOW(),
+          trip_img_url VARCHAR(100)
+        );`);
     })
     .then(() => {
       return db.query(`
@@ -61,21 +61,20 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData }) => {
     .then(() => {
       return db.query(`
         CREATE TABLE rooms (
-        room_id SERIAL PRIMARY KEY,
-        room_name VARCHAR(50) NOT NULL UNIQUE
-        );
-        `)
+          room_id SERIAL PRIMARY KEY,
+          trip_id INT REFERENCES trips(trip_id) ON DELETE CASCADE,
+          room_name VARCHAR(50) NOT NULL UNIQUE
+        );`);
     })
     .then(() => {
       return db.query(`
         CREATE TABLE messages (
           message_id SERIAL PRIMARY KEY,
-          user_id INT, -- Foreign key to users table, nullable
-          room_id INT, -- Foreign key to rooms table, nullable
+          user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
+          room_id INT REFERENCES rooms(room_id) ON DELETE CASCADE,
           content TEXT NOT NULL,
           timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-`);
+        );`);
     })
     .then(() => {
       const insertUserQueryStr = format(
@@ -149,6 +148,25 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData }) => {
         ])
       );
       return db.query(insertTripMembersQueryStr);
+    })
+    .then(() => {
+      const insertRoomsQueryStr = format(
+        "INSERT INTO rooms (trip_id, room_name) VALUES %L;",
+        roomsData.map(({ trip_id, room_name }) => [trip_id, room_name])
+      );
+      return db.query(insertRoomsQueryStr);
+    })
+    .then(() => {
+      const insertMessagesQueryStr = format(
+        "INSERT INTO messages (user_id, room_id, content, timestamp) VALUES %L;",
+        messagesData.map(({ user_id, room_id, content, timestamp }) => [
+          user_id,
+          room_id,
+          content,
+          timestamp || new Date().toISOString(),
+        ])
+      );
+      return db.query(insertMessagesQueryStr);
     });
 };
 
