@@ -334,5 +334,19 @@
       }
     ]
   }
+},
+"GET /api/users/email/:email": {
+  "description": "Retrieve the user ID associated with a specific email address.",
+  "exampleRequest": {
+    "email": "exampleuser@email.com"
+  },
+  "exampleResponse": {
+    "user_id": 3
+  },
+  "queries": [],
+  "statusCodes": {
+    "200": "Successfully retrieved the user ID for the provided email.",
+    "404": "No user found with the provided email address."
+  }
 }
 }
