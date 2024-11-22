@@ -139,7 +139,7 @@
   },
   "POST /api/trips": {
     "description": "serves a new trip object",
-    "queries": [],
+    "queries": ["Missing required fields: trip_name, location, start_date, created_by are mandatory"],
     "exampleResponse": {
       "trip": {
         "trip_id": 5,

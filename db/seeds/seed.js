@@ -31,8 +31,8 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData, roomsData,
           end_date DATE,
           created_by INT REFERENCES users(user_id) ON DELETE CASCADE,
           created_at TIMESTAMP DEFAULT NOW(),
-          trip_img_url VARCHAR(100)
-        );`);
+          trip_img_url VARCHAr
+                  );`);
     })
     .then(() => {
       return db.query(`

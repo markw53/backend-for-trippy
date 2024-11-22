@@ -73,7 +73,7 @@ exports.insertTrip = (
           `,
           [trip.trip_id, created_by, true]
         )
-        .then(() => trip); 
+        .then(() => trip);
     });
 };
 
@@ -122,15 +122,13 @@ exports.removeTripById = (trip_id) => {
     RETURNING *;
   `;
 
-  return db.query(queryStr, [trip_id])
-  .then(({ rows }) => {
+  return db.query(queryStr, [trip_id]).then(({ rows }) => {
     if (rows.length === 0) {
       return Promise.reject({ status: 404, msg: "Trip not found" });
     }
     return rows[0];
   });
-  }
-
+};
 
 exports.addTripMember = (trip_id, user_id) => {
   if (!user_id) {
@@ -178,7 +176,8 @@ exports.deleteTripMember = (trip_id, user_id) => {
     return Promise.reject({
       status: 404,
       msg: "Missing required fields: trip_id and user_id are mandatory",
-    }) }
+    });
+  }
   return db
     .query(
       `
