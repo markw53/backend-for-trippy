@@ -679,7 +679,10 @@ describe("GET /api/trips/:trip_id/activities/itinerary", () => {
         activities.map((activity) => {
           expect(activity.in_itinerary).toBe(true);
         });
+        const dates = activities.map((activity) => new Date(activity.date));
+        expect(dates).toEqual([...dates].sort((a, b) => a - b));
       });
+      
   });
   it("400: responds with an error if trip_id is invalid", () => {
     return request(app)
