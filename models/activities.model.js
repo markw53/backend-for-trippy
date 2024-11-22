@@ -52,25 +52,38 @@ exports.updateActivity = (
   activity_name,
   description,
   date,
-  time
+  time,
+  in_itinerary,
+  votes,
+  activity_img_url
 ) => {
-  if (!activity_name && !description && !date && !time && !in_itinerary && !votes && !activity_img_url) {
+  if (
+    !activity_name &&
+    !description &&
+    !date &&
+    !time &&
+    in_itinerary === undefined &&
+    votes === undefined &&
+    !activity_img_url
+  ) {
     return Promise.reject({
       status: 400,
       msg: "400: Bad Request - No updates provided",
     });
   }
+
   return db
     .query(
       `
       UPDATE activities
-      SET activity_name = $2,
-          description = $3,
-          date = $4,
-          time = $5
-          in_itinerary = $6
-          votes = $7
-          activity_img_url = $8
+      SET 
+          activity_name = COALESCE($2, activity_name),
+          description = COALESCE($3, description),
+          date = COALESCE($4, date),
+          time = COALESCE($5, time),
+          in_itinerary = COALESCE($6, in_itinerary),
+          votes = COALESCE($7, votes),
+          activity_img_url = COALESCE($8, activity_img_url)
       WHERE activity_id = $1
       RETURNING *;
       `,
@@ -83,6 +96,7 @@ exports.updateActivity = (
       return result.rows[0];
     });
 };
+
 
 exports.removeActivityById = (activity_id) => {
   return db
