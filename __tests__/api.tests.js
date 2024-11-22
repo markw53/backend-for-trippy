@@ -339,7 +339,7 @@ describe("GET /api/trips/trip_id", () => {
         expect(trip.location).toBe("Barbados");
         expect(trip.description).toBe("Silent Assassin");
         expect(trip.start_date).toBe("2022-02-02T00:00:00.000Z");
-        expect(trip.trip_img_url).toBe(String);
+        expect(trip.trip_img_url).toBe("https://static.wikia.nocookie.net/versus-compendium/images/1/13/Ac_2_ezio.png/revision/latest/scale-to-width-down/1000?cb=20200113175628")
       });
   });
 });
