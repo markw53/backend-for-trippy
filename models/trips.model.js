@@ -90,14 +90,15 @@ exports.updateTrip = (
     .query(
       `
     UPDATE trips
-    SET trip_name = $2,
-      location = $3,
-      description = $4,
-      start_date = $5,
-      end_date = $6,
-      trip_img_url = $7
-    WHERE trip_id = $1
-    RETURNING *
+      SET 
+        trip_name = COALESCE($2, trip_name),
+        location = COALESCE($3, location),
+        description = COALESCE($4, description),
+        start_date = COALESCE($5, start_date),
+        end_date = COALESCE($6, end_date),
+        trip_img_url = COALESCE($7, trip_img_url)
+      WHERE trip_id = $1
+      RETURNING *;
     `,
       [
         trip_id,
