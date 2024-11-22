@@ -113,16 +113,24 @@ exports.updateTrip = (
 };
 
 exports.removeTripById = (trip_id) => {
+  if (isNaN(trip_id)) {
+    return Promise.reject({ status: 400, msg: "400: Bad Request" });
+  }
   const queryStr = `
     DELETE FROM trips
     WHERE trip_id = $1
     RETURNING *;
   `;
 
-  return db.query(queryStr, [trip_id]).then(({ rows }) => {
+  return db.query(queryStr, [trip_id])
+  .then(({ rows }) => {
+    if (rows.length === 0) {
+      return Promise.reject({ status: 404, msg: "Trip not found" });
+    }
     return rows[0];
   });
-};
+  }
+
 
 exports.addTripMember = (trip_id, user_id) => {
   if (!user_id) {
