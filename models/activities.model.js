@@ -54,6 +54,12 @@ exports.updateActivity = (
   date,
   time
 ) => {
+  if (!activity_name && !description && !date && !time) {
+    return Promise.reject({
+      status: 400,
+      msg: "400: Bad Request - No updates provided",
+    });
+  }
   return db
     .query(
       `
@@ -98,6 +104,7 @@ exports.fetchItinerary = (trip_id) => {
     .query(
       `
     SELECT * FROM activities WHERE in_itinerary = true AND trip_id = $1
+    ORDER BY date ASC
     `,
       [trip_id]
     )

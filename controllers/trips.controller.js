@@ -82,24 +82,19 @@ exports.patchTrip = (request, response, next) => {
     .catch(next);
 };
 
-exports.deleteTrip = (req, res, next) => {
-  const { trip_id } = req.params;
-  const { user_id } = req.user;
-  checkIfAdmin(trip_id, user_id).then(adminStatus => {
-    if (!adminStatus) {
-      Promise.reject({ status: 403, msg: "Operation not allowed" });
-    }
-    return removeTripById(trip_id)
+exports.deleteTrip = (request, response, next) => {
+  const { trip_id } = request.params;
+    
+    removeTripById(trip_id)
       .then(deletedTrip => {
         if (!deletedTrip) {
-          return res.status(404).send({ msg: "Trip not found" });
+          return response.status(404).send({ msg: "Trip not found" });
         }
-        res.status(200).send({ msg: "Trip deleted!", trip: deletedTrip });
+        response.status(204).send();
       })
       .catch(next);
-  });
-};
-
+    }
+  
 exports.inviteUserToTrip = (request, response, next) => {
   const { trip_id } = request.params;
   const { user_id } = request.body;
