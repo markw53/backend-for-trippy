@@ -148,6 +148,17 @@ describe("PATCH /api/users/:user_id", () => {
         expect(body.msg).toBe("400: Bad Request");
       });
   });
+  it("400: responds with an error when attempting to update a non-updatable field", () => {
+    const invalidUpdate = { user_id: 999 };
+    return request(app)
+      .patch("/api/users/1")
+      .send(invalidUpdate)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("400: Bad Request");
+      });
+  });
+  
   it("404: responds with an appropriate status and error message when provided a valid user id that does not exist", () => {
     const updateUser = {
       name: "Adam",
@@ -201,7 +212,30 @@ describe("DELETE /api/users/:user_id", () => {
       });
   });
 });
+describe("GET /api/users/email/:email", () => {
+  it("200: returns the user ID when a valid email is provided", () => {
+    return request(app)
+      .get("/api/users/email/abdiaziz@northcoders.co.uk") 
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toEqual({
+          userId: {
+            user_id: expect.any(Number), 
+          },
+        });
+      });
+  });
 
+  it("404: responds with an error when the email does not exist", () => {
+    return request(app)
+      .get("/api/users/by-email/nonexistent@example.com")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("404: Not Found");
+      });
+  });
+
+});
 // TRIPS
 describe("GET /api/trips", () => {
   it("return an array of trips object", () => {
@@ -306,6 +340,31 @@ describe("GET /api/trips/trip_id", () => {
         expect(trip.description).toBe("Silent Assassin");
         expect(trip.start_date).toBe("2022-02-02T00:00:00.000Z");
         expect(trip.trip_img_url).toBe(null);
+      });
+  });
+});
+describe("DELETE /api/trips/:trip_id", () => {
+  it("204: deletes a trip and responds with no content", () => {
+    return request(app)
+    .delete("/api/trips/1")
+    .expect(204);
+  });
+
+  it("404: responds with an error if trip_id does not exist", () => {
+    return request(app)
+      .delete("/api/trips/999")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Trip not found");
+      });
+  });
+
+  it("400: responds with an error if trip_id is invalid", () => {
+    return request(app)
+      .delete("/api/trips/not_a_valid_id")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("400: Bad Request");
       });
   });
 });
@@ -576,11 +635,10 @@ describe("PATCH /api/trips/:trip_id/activities/:activity_id", () => {
       .send({})
       .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe("400: Bad Request");
+        expect(body.msg).toBe("400: Bad Request - No updates provided");
       });
   });
-});
-
+})
 describe("DELETE /api/trips/:trip_id/activities/:activity_id", () => {
   it("200: deletes an activity and responds with a success message", () => {
     return request(app)
@@ -671,27 +729,88 @@ describe("GET /api/trips/:trip_id/activities/possibility", () => {
       });
   });
 });
-describe("GET /api/users/email/:email", () => {
-  it("200: returns the user ID when a valid email is provided", () => {
+
+// MESSAGES
+describe("GET /api/rooms/:room_id/messages", () => {
+  it("200: returns an array of messages for a valid room_id", () => {
     return request(app)
-      .get("/api/users/email/abdiaziz@northcoders.co.uk") 
+      .get("/api/rooms/1/messages")
       .expect(200)
       .then(({ body }) => {
-        expect(body).toEqual({
-          userId: {
-            user_id: expect.any(Number), 
-          },
+        const { messages } = body;
+        expect(Array.isArray(messages)).toBe(true);
+        messages.forEach((message) => {
+          expect(message).toHaveProperty("message_id", expect.any(Number));
+          expect(message).toHaveProperty("content", expect.any(String));
+          expect(message).toHaveProperty("timestamp", expect.any(String));
+          expect(message).toHaveProperty("user_name", expect.any(String));
+          expect(message).toHaveProperty("avatar_url", expect.any(String));
         });
       });
   });
 
-  it("404: responds with an error when the email does not exist", () => {
+  it("404: returns an error if room_id does not exist", () => {
     return request(app)
-      .get("/api/users/by-email/nonexistent@example.com")
+      .get("/api/rooms/999/messages")
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("404: Not Found");
+        expect(body.msg).toBe("404: Room Not Found");
       });
   });
 
+  it("400: returns an error if room_id is invalid", () => {
+    return request(app)
+      .get("/api/rooms/not_a_valid_id/messages")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("400: Bad Request");
+      });
+  });
+});
+describe("POST /api/rooms/:room_id/messages", () => {
+  it("201: adds a new message to the room and returns the created message", () => {
+    const newMessage = {
+      user_id: 1,
+      content: "This is a test message.",
+    };
+
+    return request(app)
+      .post("/api/rooms/1/messages")
+      .send(newMessage)
+      .expect(201)
+      .then(({ body }) => {
+        const { message } = body;
+        expect(message).toHaveProperty("message_id", expect.any(Number));
+        expect(message).toHaveProperty("user_id", 1);
+        expect(message).toHaveProperty("room_id", 1);
+        expect(message).toHaveProperty("content", "This is a test message.");
+        expect(message).toHaveProperty("timestamp", expect.any(String));
+      });
+  });
+
+  it("400: responds with an error if required fields are missing", () => {
+    const invalidMessage = { content: "Incomplete data" };
+    return request(app)
+      .post("/api/rooms/1/messages")
+      .send(invalidMessage)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("400: Bad Request - Missing required fields");
+      });
+  });
+
+  it("404: responds with an error if room_id does not exist", () => {
+    const newMessage = {
+      user_id: 1,
+      content: "Test message for a non-existent room.",
+    };
+
+    return request(app)
+      .post("/api/rooms/999/messages")
+      .send(newMessage)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("404: Room Not Found");
+      });
+  });
 });
