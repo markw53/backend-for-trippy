@@ -39,9 +39,9 @@ exports.addActivity = (request, response, next) => {
 
 exports.updateActivity = (request, response, next) => {
   const { activity_id } = request.params;
-  const { activity_name, description, date, time } = request.body;
+  const { activity_name, description, date, time, in_itinerary, votes, activity_img_url } = request.body;
 
-  updateActivity(activity_id, activity_name, description, date, time)
+  updateActivity(activity_name, description, date, time, in_itinerary, votes, activity_img_url)
     .then((updatedActivity) => {
       response.status(200).send({ activity: updatedActivity });
     })

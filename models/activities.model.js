@@ -54,7 +54,7 @@ exports.updateActivity = (
   date,
   time
 ) => {
-  if (!activity_name && !description && !date && !time) {
+  if (!activity_name && !description && !date && !time && !in_itinerary && !votes && !activity_img_url) {
     return Promise.reject({
       status: 400,
       msg: "400: Bad Request - No updates provided",
@@ -68,10 +68,13 @@ exports.updateActivity = (
           description = $3,
           date = $4,
           time = $5
+          in_itinerary = $6
+          votes = $7
+          activity_img_url = $8
       WHERE activity_id = $1
       RETURNING *;
       `,
-      [activity_id, activity_name, description, date, time]
+      [activity_id, activity_name, description, date, time, in_itinerary, votes, activity_img_url]
     )
     .then((result) => {
       if (result.rows.length === 0) {
