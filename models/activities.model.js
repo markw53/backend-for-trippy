@@ -27,7 +27,7 @@ exports.fetchActivityById = (activity_id) => {
     });
 };
 
-exports.insertActivity = (trip_id, activity_name, description, date, time) => {
+exports.insertActivity = (trip_id, activity_name, description, date, time, activity_img_url) => {
   if (!activity_name || !date) {
     return Promise.reject({
       status: 400,
@@ -38,11 +38,11 @@ exports.insertActivity = (trip_id, activity_name, description, date, time) => {
   return db
     .query(
       `
-      INSERT INTO activities (trip_id, activity_name, description, date, time)
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO activities (trip_id, activity_name, description, date, time, activity_img_url)
+      VALUES ($1, $2, $3, $4, $5, $6)
       RETURNING *;
       `,
-      [trip_id, activity_name, description, date, timeValue]
+      [trip_id, activity_name, description, date, timeValue, activity_img_url]
     )
     .then((result) => result.rows[0]);
 };
