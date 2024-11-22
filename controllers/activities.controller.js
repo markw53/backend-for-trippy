@@ -28,9 +28,9 @@ exports.getActivityById = (request, response, next) => {
 
 exports.addActivity = (request, response, next) => {
   const { trip_id } = request.params;
-  const { activity_name, description, date, time } = request.body;
+  const { activity_name, description, date, time, activity_img_url } = request.body;
 
-  insertActivity(trip_id, activity_name, description, date, time)
+  insertActivity(trip_id, activity_name, description, date, time, activity_img_url)
     .then((activity) => {
       response.status(201).send({ activity });
     })

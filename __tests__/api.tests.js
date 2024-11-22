@@ -549,6 +549,7 @@ describe("POST /api/trips/:trip_id/activities", () => {
       description: "Mountain hike",
       date: "2024-11-21T00:00:00.000Z",
       time: "10:00:00",
+      activity_img_url: "https://example.com/snorkeling.jpg",
     };
 
     return request(app)

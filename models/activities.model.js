@@ -27,7 +27,8 @@ exports.fetchActivityById = (activity_id) => {
     });
 };
 
-exports.insertActivity = (trip_id, activity_name, description, date, time, activity_img_url) => {
+exports.insertActivity = (trip_id, activity_name, description, date, time, 
+  activity_img_url) => {
   if (!activity_name || !date) {
     return Promise.reject({
       status: 400,

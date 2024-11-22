@@ -46,7 +46,7 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData, roomsData,
           time TIME,
           description TEXT,
           votes INT DEFAULT 0,
-          activity_img_url VARCHAR DEFAULT 'https://images.pexels.com/photos/97050/pexels-photo-97050.jpeg?w=700&h=700'
+          activity_img_url VARCHAR 
         );`);
     })
     .then(() => {
