@@ -31,7 +31,7 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData, roomsData,
           end_date DATE,
           created_by INT REFERENCES users(user_id) ON DELETE CASCADE,
           created_at TIMESTAMP DEFAULT NOW(),
-          trip_img_url VARCHAr
+          trip_img_url VARCHAR
                   );`);
     })
     .then(() => {
@@ -86,7 +86,7 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData, roomsData,
     })
     .then(() => {
       const insertTripQueryStr = format(
-        "INSERT INTO trips (trip_name, location, description, start_date, end_date, created_by) VALUES %L;",
+        "INSERT INTO trips (trip_name, location, description, start_date, end_date, created_by, trip_img_url) VALUES %L;",
         tripsData.map(
           ({
             trip_name,
@@ -95,6 +95,7 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData, roomsData,
             start_date,
             end_date,
             created_by,
+            trip_img_url
           }) => [
             trip_name,
             location,
@@ -102,6 +103,7 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData, roomsData,
             start_date,
             end_date,
             created_by,
+            trip_img_url            
           ]
         )
       );

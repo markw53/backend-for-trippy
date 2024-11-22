@@ -339,7 +339,7 @@ describe("GET /api/trips/trip_id", () => {
         expect(trip.location).toBe("Barbados");
         expect(trip.description).toBe("Silent Assassin");
         expect(trip.start_date).toBe("2022-02-02T00:00:00.000Z");
-        expect(trip.trip_img_url).toBe(null);
+        expect(trip.trip_img_url).toBe(String);
       });
   });
 });
