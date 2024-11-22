@@ -30,20 +30,20 @@
       "email": "abdiaziz@northcoders.co.uk"
     }
   },
-"GET /api/users/email/:email": {
-  "description": "Retrieve the user ID associated with a specific email address.",
-  "exampleRequest": {
-    "email": "exampleuser@email.com"
+  "GET /api/users/email/:email": {
+    "description": "Retrieve the user ID associated with a specific email address.",
+    "exampleRequest": {
+      "email": "exampleuser@email.com"
+    },
+    "exampleResponse": {
+      "user_id": 3
+    },
+    "queries": [],
+    "statusCodes": {
+      "200": "Successfully retrieved the user ID for the provided email.",
+      "404": "No user found with the provided email address."
+    }
   },
-  "exampleResponse": {
-    "user_id": 3
-  },
-  "queries": [],
-  "statusCodes": {
-    "200": "Successfully retrieved the user ID for the provided email.",
-    "404": "No user found with the provided email address."
-  }
-},
   "GET /api/users/:user_id/trips": {
     "description": "Retrieve all trips associated with a specific user by their user ID.",
     "exampleRequest": {
@@ -235,42 +235,42 @@
     }
   },
 
-"GET /api/trips/:trip_id/activities": {
-  "description": "Retrieve all activities for a specific trip.",
-  "exampleResponse": {
+  "GET /api/trips/:trip_id/activities": {
+    "description": "Retrieve all activities for a specific trip.",
+    "exampleResponse": {
       "activities": [
         {
-        "activity_id": 1,
-        "trip_id": 1,
-        "activity_name": "Snorkeling",
-        "location": "Barbados Beach",
-        "description": "Explore coral reefs and marine life.",
-        "date": "2024-03-10T00:00:00.000Z",
-        "time": "10:00:00",
-        "activity_img_url": "https://example.com/snorkeling.jpg",
-        "created_at": "2024-11-20T02:06:32.400Z",
-        "in_itinerary": true,
-        "votes": 15
-      },
-      {
-        "activity_id": 2,
-        "trip_id": 1,
-        "activity_name": "Mountain Hike",
-        "location": "Green Ridge Trail",
-        "description": "A scenic hike through lush mountain trails.",
-        "date": "2024-03-11T00:00:00.000Z",
-        "time": "08:00:00",
-        "activity_img_url": "https://example.com/hiking.jpg",
-        "created_at": "2024-11-20T02:06:32.400Z",
-        "in_itinerary": false,
-        "votes": 8
-      }
-    ]
-  }
-},
-"GET /api/trips/:trip_id/activities/:activity_id": {
-  "description": "Retrieve a specific activity by its ID.",
-  "exampleResponse": {
+          "activity_id": 1,
+          "trip_id": 1,
+          "activity_name": "Snorkeling",
+          "location": "Barbados Beach",
+          "description": "Explore coral reefs and marine life.",
+          "date": "2024-03-10T00:00:00.000Z",
+          "time": "10:00:00",
+          "activity_img_url": "https://example.com/snorkeling.jpg",
+          "created_at": "2024-11-20T02:06:32.400Z",
+          "in_itinerary": true,
+          "votes": 15
+        },
+        {
+          "activity_id": 2,
+          "trip_id": 1,
+          "activity_name": "Mountain Hike",
+          "location": "Green Ridge Trail",
+          "description": "A scenic hike through lush mountain trails.",
+          "date": "2024-03-11T00:00:00.000Z",
+          "time": "08:00:00",
+          "activity_img_url": "https://example.com/hiking.jpg",
+          "created_at": "2024-11-20T02:06:32.400Z",
+          "in_itinerary": false,
+          "votes": 8
+        }
+      ]
+    }
+  },
+  "GET /api/trips/:trip_id/activities/:activity_id": {
+    "description": "Retrieve a specific activity by its ID.",
+    "exampleResponse": {
       "activity": {
         "activity_id": 1,
         "trip_id": 1,
@@ -283,42 +283,34 @@
         "in_itinerary": true,
         "votes": 15
       }
-  }
-},
-"POST /api/trips/:trip_id/activities": {
-  "description": "Create a new activity for a specific trip.",
-  "exampleRequest": {
-    "activity_name": "Hiking",
-    "description": "Mountain hike",
-    "date": "2024-11-21T00:00:00.000Z",
-    "time": "10:00:00"
+    }
   },
-  "exampleResponse": {
-    "activities": {
-      "activity_id": 1,
-      "trip_id": 1,
+  "POST /api/trips/:trip_id/activities": {
+    "description": "Create a new activity for a specific trip.",
+    "exampleRequest": {
       "activity_name": "Hiking",
       "description": "Mountain hike",
       "date": "2024-11-21T00:00:00.000Z",
-      "time": "10:00:00",
-      "activity_img_url": "https://example.com/hiking.jpg",
-      "created_at": "2024-11-20T12:00:00.000Z",
-      "in_itinerary": false,
-      "votes": 0
+      "time": "10:00:00"
+    },
+    "exampleResponse": {
+      "activities": {
+        "activity_id": 1,
+        "trip_id": 1,
+        "activity_name": "Hiking",
+        "description": "Mountain hike",
+        "date": "2024-11-21T00:00:00.000Z",
+        "time": "10:00:00",
+        "activity_img_url": "https://example.com/hiking.jpg",
+        "created_at": "2024-11-20T12:00:00.000Z",
+        "in_itinerary": false,
+        "votes": 0
+      }
     }
-  }
-},
-"PATCH /api/trips/:trip_id/activities/:activity_id": {
-  "description": "Update details of a specific activity.",
-  "exampleRequest": {
-    "activity_name": "Updated Activity",
-    "description": "Updated Description",
-    "date": "2024-12-01T00:00:00.000Z",
-    "time": "15:00:00"
   },
-  "exampleResponse": {
-    "activity": {
-      "activity_id": 1,
+  "PATCH /api/trips/:trip_id/activities/:activity_id": {
+    "description": "Update details of a specific activity.",
+    "exampleRequest": {
       "trip_id": 1,
       "activity_name": "Updated Activity",
       "description": "Updated Description",
@@ -328,102 +320,117 @@
       "created_at": "2024-11-20T02:06:32.400Z",
       "in_itinerary": true,
       "votes": 20
-    }
-  }
-},
-"DELETE /api/trips/:trip_id/activities/:activity_id": {
-  "description": "Delete a specific activity by ID.",
-  "exampleResponse": {
-    "msg": "Activity deleted successfully"
-  }
-},
-"GET /api/trips/:trip_id/activities/itinerary": {
-  "description": "Serves an array of items in the itinerary",
-  "exampleResponse": [{
-    "activities": [
-      {
+    },
+    "exampleResponse": {
+      "activity": {
         "activity_id": 1,
         "trip_id": 1,
-        "activity_name": "Snorkeling Adventure",
+        "activity_name": "Updated Activity",
+        "description": "Updated Description",
+        "date": "2024-12-01T00:00:00.000Z",
+        "time": "15:00:00",
+        "activity_img_url": "https://example.com/updated.jpg",
+        "created_at": "2024-11-20T02:06:32.400Z",
         "in_itinerary": true,
-        "created_at": "2024-11-20T13:52:02.429Z",
-        "date": "2024-03-10T00:00:00.000Z",
-        "time": "10:00:00",
-        "description": "Explore coral reefs and marine life.",
-        "votes": 15,
-        "activity_img_url": "https://example.com/snorkeling.jpg"
+        "votes": 20
       }
-    ]
-  }]
-},
-"GET /api/trips/:trip_id/activities/possibility": {
-  "description": "Serves an array of items that are not in the itinerary",
-  "exampleResponse": {
-    "activities": [
-      {
-        "activity_id": 2,
-        "trip_id": 1,
-        "activity_name": "Mountain Hike",
-        "in_itinerary": false,
-        "created_at": "2024-11-20T13:55:47.896Z",
-        "date": "2024-03-11T00:00:00.000Z",
-        "time": "08:00:00",
-        "description": "A scenic hike through lush mountain trails.",
-        "votes": 8,
-        "activity_img_url": "https://example.com/hiking.jpg"
-      }
-    ]
-  }
-},
-"GET /api/rooms/:room_id/messages": {
-  "description": "Retrieve all messages for a specific room.",
-  "queries": [],
-  "exampleRequest": {
-    "room_id": 1
-  },
-  "exampleResponse": {
-    "messages": [
-      {
-        "message_id": 1,
-        "user_name": "Alice",
-        "avatar_url": "https://example.com/avatar/alice.png",
-        "content": "Hello, everyone! Excited for the trip!",
-        "timestamp": "2024-11-21T10:00:00.000Z"
-      },
-      {
-        "message_id": 2,
-        "user_name": "Bob",
-        "avatar_url": "https://example.com/avatar/bob.png",
-        "content": "Hi, this trip is going to be amazing!",
-        "timestamp": "2024-11-21T10:05:00.000Z"
-      }
-    ]
-  },
-  "statusCodes": {
-    "200": "Messages retrieved successfully.",
-    "404": "No messages found for this room."
-  }
-},
-"POST /api/rooms/:room_id/messages": {
-  "description": "Post a new message to a specific room.",
-  "queries": [],
-  "exampleRequest": {
-    "user_id": 1,
-    "content": "Looking forward to the trip!"
-  },
-  "exampleResponse": {
-    "message": {
-      "message_id": 3,
-      "user_id": 1,
-      "room_id": 1,
-      "content": "Looking forward to the trip!",
-      "timestamp": "2024-11-21T10:30:00.000Z"
     }
   },
-  "statusCodes": {
-    "201": "Message posted successfully.",
-    "400": "Bad request. Ensure user_id and content are provided.",
-    "404": "Room not found."
+  "DELETE /api/trips/:trip_id/activities/:activity_id": {
+    "description": "Delete a specific activity by ID.",
+    "exampleResponse": {
+      "msg": "Activity deleted successfully"
+    }
+  },
+  "GET /api/trips/:trip_id/activities/itinerary": {
+    "description": "Serves an array of items in the itinerary",
+    "exampleResponse": [
+      {
+        "activities": [
+          {
+            "activity_id": 1,
+            "trip_id": 1,
+            "activity_name": "Snorkeling Adventure",
+            "in_itinerary": true,
+            "created_at": "2024-11-20T13:52:02.429Z",
+            "date": "2024-03-10T00:00:00.000Z",
+            "time": "10:00:00",
+            "description": "Explore coral reefs and marine life.",
+            "votes": 15,
+            "activity_img_url": "https://example.com/snorkeling.jpg"
+          }
+        ]
+      }
+    ]
+  },
+  "GET /api/trips/:trip_id/activities/possibility": {
+    "description": "Serves an array of items that are not in the itinerary",
+    "exampleResponse": {
+      "activities": [
+        {
+          "activity_id": 2,
+          "trip_id": 1,
+          "activity_name": "Mountain Hike",
+          "in_itinerary": false,
+          "created_at": "2024-11-20T13:55:47.896Z",
+          "date": "2024-03-11T00:00:00.000Z",
+          "time": "08:00:00",
+          "description": "A scenic hike through lush mountain trails.",
+          "votes": 8,
+          "activity_img_url": "https://example.com/hiking.jpg"
+        }
+      ]
+    }
+  },
+  "GET /api/rooms/:room_id/messages": {
+    "description": "Retrieve all messages for a specific room.",
+    "queries": [],
+    "exampleRequest": {
+      "room_id": 1
+    },
+    "exampleResponse": {
+      "messages": [
+        {
+          "message_id": 1,
+          "user_name": "Alice",
+          "avatar_url": "https://example.com/avatar/alice.png",
+          "content": "Hello, everyone! Excited for the trip!",
+          "timestamp": "2024-11-21T10:00:00.000Z"
+        },
+        {
+          "message_id": 2,
+          "user_name": "Bob",
+          "avatar_url": "https://example.com/avatar/bob.png",
+          "content": "Hi, this trip is going to be amazing!",
+          "timestamp": "2024-11-21T10:05:00.000Z"
+        }
+      ]
+    },
+    "statusCodes": {
+      "200": "Messages retrieved successfully.",
+      "404": "No messages found for this room."
+    }
+  },
+  "POST /api/rooms/:room_id/messages": {
+    "description": "Post a new message to a specific room.",
+    "queries": [],
+    "exampleRequest": {
+      "user_id": 1,
+      "content": "Looking forward to the trip!"
+    },
+    "exampleResponse": {
+      "message": {
+        "message_id": 3,
+        "user_id": 1,
+        "room_id": 1,
+        "content": "Looking forward to the trip!",
+        "timestamp": "2024-11-21T10:30:00.000Z"
+      }
+    },
+    "statusCodes": {
+      "201": "Message posted successfully.",
+      "400": "Bad request. Ensure user_id and content are provided.",
+      "404": "Room not found."
+    }
   }
-}
 }

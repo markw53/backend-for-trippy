@@ -104,6 +104,7 @@ exports.fetchItinerary = (trip_id) => {
     .query(
       `
     SELECT * FROM activities WHERE in_itinerary = true AND trip_id = $1
+    ORDER BY date ASC
     `,
       [trip_id]
     )
