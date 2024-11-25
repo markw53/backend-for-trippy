@@ -6,6 +6,7 @@ exports.fetchMessagesByRoomId = (room_id) => {
       messages.message_id,
       messages.content,
       messages.timestamp,
+      messages.user_id,
       users.name AS user_name,
       users.avatar_url
     FROM messages
