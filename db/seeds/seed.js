@@ -55,7 +55,8 @@ const seed = ({ userData, tripsData, tripMembersData, activitiesData, roomsData,
           trip_member_id SERIAL PRIMARY KEY,
           trip_id INT REFERENCES trips(trip_id) ON DELETE CASCADE,
           user_id INT REFERENCES users(user_id) ON DELETE CASCADE,
-          is_admin BOOLEAN DEFAULT FALSE
+          is_admin BOOLEAN DEFAULT FALSE,
+          UNIQUE (trip_id, user_id)
         );`);
     })
     .then(() => {
