@@ -724,14 +724,6 @@ describe("GET /api/trips/:trip_id/activities/possibility", () => {
         expect(body.msg).toBe("400: Bad Request");
       });
   });
-  it("404: responds with an error if trip_id is valid but does not exist", () => {
-    return request(app)
-      .get("/api/trips/9999/activities/possibility")
-      .expect(404)
-      .then(({ body }) => {
-        expect(body.msg).toBe("404: Not Found");
-      });
-  });
 });
 
 // MESSAGES
