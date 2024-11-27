@@ -139,13 +139,11 @@ exports.fetchPossibility = (trip_id) => {
     .query(
       `
     SELECT * FROM activities WHERE in_itinerary = false AND trip_id = $1
+    ORDER BY votes DESC
     `,
       [trip_id]
     )
     .then((result) => {
-      if (result.rows.length === 0) {
-        return Promise.reject({ status: 404, msg: "404: Not Found" });
-      }
       return result.rows;
     });
 };
