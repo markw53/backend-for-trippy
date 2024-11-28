@@ -26,12 +26,12 @@ module.exports = [
   {
     user_id: 8,
     room_id: 1, 
-    content: "How did who do this?!",
+    content: "How did he do this?!",
     timestamp: "2024-11-21T10:00:00Z",
   },
   {
     user_id: 2,
-    room_id: 1,
+    room_id: 2,
     content: "Hi, this trip is going to be amazing!",
     timestamp: "2024-11-21T10:05:00Z",
   },
