@@ -9,7 +9,7 @@ exports.activitiesData = [
     time: "10:00:00",
     description: "Explore coral reefs and marine life.",
     votes: 15,
-    activity_img_url: "https://i0.wp.com/www.touristjapan.com/wp-content/uploads/2023/04/fujiyoshida-view-scaled-e1680427764989.jpg?resize=2000%2C800&ssl=1",
+    activity_img_url: "https://imgix.cosmicjs.com/9f908800-d0b8-11e9-85fb-79b7ad6a8445-the-adventure-people-activity-snorkeling.jpg",
   },
   {
     trip_id: 1,

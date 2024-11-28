@@ -40,6 +40,11 @@ module.exports = [
     is_admin: true,
   },
   {
+    trip_id: 2,
+    user_id: 11,
+    is_admin: true,
+  },
+  {
     trip_id: 3,
     user_id: 6,
     is_admin: false,

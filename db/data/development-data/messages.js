@@ -8,7 +8,7 @@ module.exports = [
   {
     user_id: 9,
     room_id: 1, 
-    content: "Wow Callum is such a great coder!",
+    content: "Wow this app is awesome!",
     timestamp: "2024-11-21T10:00:00Z",
   },
   {
@@ -26,7 +26,7 @@ module.exports = [
   {
     user_id: 8,
     room_id: 1, 
-    content: "How did he do this?!",
+    content: "Hi, this trip is going to be amazing!",
     timestamp: "2024-11-21T10:00:00Z",
   },
   {
