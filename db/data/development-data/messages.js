@@ -6,6 +6,30 @@ module.exports = [
     timestamp: "2024-11-21T10:00:00Z",
   },
   {
+    user_id: 9,
+    room_id: 1, 
+    content: "Wow Callum is such a great coder!",
+    timestamp: "2024-11-21T10:00:00Z",
+  },
+  {
+    user_id: 10,
+    room_id: 1, 
+    content: "I know right, super impressive!",
+    timestamp: "2024-11-21T10:00:00Z",
+  },
+  {
+    user_id: 12,
+    room_id: 1, 
+    content: "I concur! Fantastic",
+    timestamp: "2024-11-21T10:00:00Z",
+  },
+  {
+    user_id: 8,
+    room_id: 1, 
+    content: "How did who do this?!",
+    timestamp: "2024-11-21T10:00:00Z",
+  },
+  {
     user_id: 2,
     room_id: 1,
     content: "Hi, this trip is going to be amazing!",
